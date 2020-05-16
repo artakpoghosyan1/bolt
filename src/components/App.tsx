@@ -38,7 +38,7 @@ const App: React.FunctionComponent = () => {
     return (
         <StateContext.Provider value={{state, dispatch: dispatch!}}>
             <Container className={containerClass}>
-                <Router basename={process.env.PUBLIC_URL}>
+                <Router basename={'bolt'}>
                     <HeaderComponent/>
 
                     <Switch>
