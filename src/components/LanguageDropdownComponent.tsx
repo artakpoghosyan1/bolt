@@ -67,7 +67,9 @@ export const LanguageDropdownComponent: React.FunctionComponent = React.memo(() 
     }
 
     React.useEffect(() => {
-        i18n.changeLanguage(langFromStorage);
+        setTimeout(() => {
+            i18n.changeLanguage(langFromStorage ? langFromStorage : 'am');
+        })
     }, [])
 
     return <DropdownButton
