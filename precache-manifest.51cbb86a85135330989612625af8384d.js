@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "4798d2ad75629fac105df0d8337b6ac4",
+    "revision": "d181cc21e61d4788f807e78f5879458f",
     "url": "/bolt/index.html"
   },
   {
-    "revision": "a70ac8ae99ae2b3733dc",
+    "revision": "a9ade05d68eaa499e24f",
     "url": "/bolt/static/css/2.af3c1da9.chunk.css"
   },
   {
-    "revision": "4b3dcbfdb3419161b4c2",
+    "revision": "fe19e2b766af6561bd47",
     "url": "/bolt/static/css/main.428184c4.chunk.css"
   },
   {
-    "revision": "a70ac8ae99ae2b3733dc",
-    "url": "/bolt/static/js/2.cf48e6f3.chunk.js"
+    "revision": "a9ade05d68eaa499e24f",
+    "url": "/bolt/static/js/2.a8045d34.chunk.js"
   },
   {
     "revision": "3453b8997016469371284a28c0e873e2",
-    "url": "/bolt/static/js/2.cf48e6f3.chunk.js.LICENSE.txt"
+    "url": "/bolt/static/js/2.a8045d34.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "4b3dcbfdb3419161b4c2",
-    "url": "/bolt/static/js/main.e59a6425.chunk.js"
+    "revision": "fe19e2b766af6561bd47",
+    "url": "/bolt/static/js/main.43ea30c6.chunk.js"
   },
   {
     "revision": "2cb48fe687bc200fbf7d",
