@@ -21,6 +21,7 @@ const titleClass = css`
         color: ${mainTextColor};
         text-transform: lowercase;
         letter-spacing: 0.2px;
+        font-weight: normal;
         width: 75%;
         margin: 16px auto 0;
     }
@@ -34,8 +35,8 @@ const titleSecondaryClass = css`
 export const TitleComponent: React.FunctionComponent<ITitleComponentProps> = React.memo(props => {
     return <>
         {props.secondary ?
-            <h2 className={`${titleClass} ${titleSecondaryClass}`}>{props.children}</h2> :
-            <h1 className={titleClass}>{props.children}</h1>
+            <h2 className={`${titleClass} ${titleSecondaryClass} primary-title`}>{props.children}</h2> :
+            <h1 className={`${titleClass} secondary-title`}>{props.children}</h1>
         }
     </>
 })

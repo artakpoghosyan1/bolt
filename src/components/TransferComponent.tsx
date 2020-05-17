@@ -12,6 +12,8 @@ import {
 } from "./styleHelper/mainStyles";
 import {TitleComponent} from "./shared/TitleComponent";
 import {getLocalStorage} from "../shared/models/localstorage";
+import {TranslateComponent} from "./shared/TranslateComponent";
+import {useTranslation} from "react-i18next";
 
 const rememberFieldGroupClass = css`
     margin-bottom: 30px;
@@ -28,6 +30,7 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
     const [isChecked, setIsChecked] = React.useState(!!storage.getItem('remember'))
     const {state} = React.useContext(StateContext);
     const accountId: React.RefObject<HTMLInputElement> = React.useRef(null)
+    const {t} = useTranslation();
 
     const onSubmitHandler = () => {
         setValidated(true)
@@ -47,14 +50,14 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
 
     const disableTransfer = state.remaining <= MIN_REMAINING
 
-    return <div className={verticalCenteredLayoutClass}>
+    return <div className={`${verticalCenteredLayoutClass} transfer-wrapper`}>
         <TitleComponent>
-            Փոխանցում
-            <p>փոխանցում հասանելի գումարից</p>
+            <TranslateComponent messageKey='transfer'/>
+            <p><TranslateComponent messageKey='transferFromAvailable'/></p>
         </TitleComponent>
         {disableTransfer &&
         <Alert className={infoClass} variant='info'>
-            Դուք չունեք բավարար գեւմար Ձեր հաշվին
+            <TranslateComponent messageKey='dontHaveEnoughMoney'/>
         </Alert>
         }
         <Form noValidate validated={validated}>
@@ -64,7 +67,7 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
                     className={inputClass}
                     required
                     type="text"
-                    placeholder="Իդրամի հաշվեհամար"
+                    placeholder={t('idramAccount')}
                     defaultValue={storage.getItem('accountId') ? storage.getItem('accountId') : null}
                 />
             </Form.Group>
@@ -72,7 +75,7 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
                 <Form.Check
                     onChange={checkOnchangeHandler}
                     custom
-                    label="Հիշել"
+                    label={t('remember')}
                     type='checkbox'
                     id='remember-checkbox'
                     checked={isChecked}
@@ -82,12 +85,12 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
             <Form.Group className={lgMarginBottomClass} controlId="formBasicPassword">
                 <Form.Control
                     className={inputClass}
-                    required type="number" placeholder="Փոխանցվող գումարը"/>
+                    required type="number" placeholder={t('transferringAmount')}/>
             </Form.Group>
 
             <div className={centerClass}>
                 <Button className={mainBtnClass} type="button" onClick={onSubmitHandler} disabled={disableTransfer}>
-                    Փոխանցել
+                    <TranslateComponent messageKey='transfer'/>
                 </Button>
             </div>
         </Form>

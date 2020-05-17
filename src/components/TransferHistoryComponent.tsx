@@ -5,6 +5,7 @@ import {StateContext} from "./App";
 import {ITransferHistory} from "../shared/models/ITransferHistory";
 import {mainColor} from "../constants/colors";
 import {formatter} from "../shared/helpers/formatter";
+import {TranslateComponent} from "./shared/TranslateComponent";
 
 const amountClass = css`
     color: ${mainColor};
@@ -26,19 +27,27 @@ const dateClass = css`
     letter-spacing: 1.1px;
 `
 
+const currencyClass = css`
+    font-weight: normal;
+    margin-left: 3px;
+`
+
 export const TransferHistoryComponent: React.FunctionComponent = React.memo(props => {
     const {state} = React.useContext(StateContext);
 
     return <div>
         <TitleComponent>
-            Փոխանցումների պատնություն
-            <p>նախկինում կատարած փոխանցումները</p>
+            <TranslateComponent messageKey='transferHistory' />
+            <p><TranslateComponent messageKey='prevTransfers'/></p>
         </TitleComponent>
 
         <div>
             {state.transferHistories.map((transfer: ITransferHistory, index: number) => (
                 <div className={transferItemClass} key={index}>
-                    <span className={amountClass}>{formatter(transfer.amount)}դր</span>
+                    <span className={amountClass}>
+                        {formatter(transfer.amount)}
+                        <span className={currencyClass}><TranslateComponent messageKey='currency'/></span>
+                    </span>
                     <span className={dateClass}>{transfer.date}</span>
                 </div>
             ))}

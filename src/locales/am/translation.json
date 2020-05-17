@@ -1,0 +1,19 @@
+{
+  "login": "Մուտք",
+  "loginTo": "Մուտք գործել",
+  "loginDesc": "Մուտքագրեք Ձեր ԲՈԼՏ - ի տվյալները մուտք գործելու համար",
+  "phoneNumber": "Հեռախոսահամար",
+  "password": "Գաղտնաբառ",
+  "forgotPass": "Մոռացել ե՞ք գաղտնաբարը",
+  "remaining": "Ձեր հաշվի մնացորդը",
+  "transfer": "Փոխանցում",
+  "transferAmount": "Փոխանցել հասանելի գումարը",
+  "transferFromAvailable": "փոխանցում հասանելի գումարից",
+  "transferHistory": "Փոխանցումների պատմություն",
+  "currency": "դր",
+  "dontHaveEnoughMoney": "Դուք չունեք բավարար գեւմար Ձեր հաշվին",
+  "idramAccount": "Իդրամի հաշվեհամար",
+  "remember": "Հիշել",
+  "transferringAmount": "Փոխանցվող գումարը",
+  "prevTransfers": "նախկինում կատարած փոխանցումները"
+}

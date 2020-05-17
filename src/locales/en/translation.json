@@ -1,0 +1,19 @@
+{
+  "login": "Login",
+  "loginTo": "Login to",
+  "loginDesc": "Fill the credentials of your Bolt profile to login",
+  "phoneNumber": "Phone number",
+  "password": "Password",
+  "forgotPass": "Forgot password?",
+  "remaining": "The balance of your account",
+  "transfer": "Transfer",
+  "transferAmount": "Transfer your available amount",
+  "transferFromAvailable": "transfer from your available amount",
+  "transferHistory": "Transfer history",
+  "currency": "dr",
+  "dontHaveEnoughMoney": "You don't have enough money in your account",
+  "idramAccount": "Account number of Idram",
+  "remember": "Remember",
+  "transferringAmount": "Transferring amount",
+  "prevTransfers": "Transfers done before"
+}

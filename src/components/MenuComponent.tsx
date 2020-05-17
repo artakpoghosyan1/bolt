@@ -7,6 +7,7 @@ import {Button} from "react-bootstrap";
 import {secondaryBtnClass} from "./styleHelper/mainStyles";
 import {FaDollarSign, FaHistory} from 'react-icons/fa';
 import {formatter} from "../shared/helpers/formatter";
+import {TranslateComponent} from "./shared/TranslateComponent";
 
 const menuClass = css`
     
@@ -46,18 +47,23 @@ export const MenuComponent: React.FunctionComponent = React.memo(props => {
 
     return <div className={menuClass}>
         <TitleComponent secondary>
-            {formatter(state.remaining)}<span className={currencyClass}>դր</span>
-            <p className={remainingClass}>Ձեր հաշվի մնացորդ</p>
+            {formatter(state.remaining)}
+            <span className={currencyClass}>
+                <TranslateComponent messageKey='currency'/>
+            </span>
+            <p className={remainingClass}>
+                <TranslateComponent messageKey='remaining'/>
+            </p>
         </TitleComponent>
 
         <Button className={`${menuItemClass} ${secondaryBtnClass}`} onClick={redirectToTransferPage}>
             <FaDollarSign className={menuItemIconsClass}/>
-            Փոխանցում հասանելի գումարը
+            <TranslateComponent messageKey='transferAmount'/>
         </Button>
 
         <Button className={`${menuItemClass} ${secondaryBtnClass}`} onClick={redirectToTransferHistoryPage}>
             <FaHistory className={menuItemIconsClass}/>
-            Փոխանցումների պատմություն
+            <TranslateComponent messageKey='transferHistory'/>
         </Button>
     </div>
 })
