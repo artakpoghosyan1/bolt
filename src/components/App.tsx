@@ -11,7 +11,6 @@ import '../fonts/fonts.css'
 import {TransferComponent} from "./TransferComponent";
 import {TransferHistoryComponent} from "./TransferHistoryComponent";
 import {HeaderComponent} from "./HeaderComponent";
-import { withNamespaces } from 'react-i18next';
 
 const containerClass = css`
     height: 100vh;
@@ -61,4 +60,4 @@ const App: React.FunctionComponent = () => {
     );
 }
 
-export default withNamespaces()(App);
+export default App

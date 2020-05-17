@@ -4,7 +4,6 @@ import {css} from "emotion";
 import {useHistory} from "react-router-dom";
 import {inputClass, lgMarginBottomClass, mainBtnClass} from "./styleHelper/mainStyles";
 import {TitleComponent} from "./shared/TitleComponent";
-import {WithNamespaces, withNamespaces} from 'react-i18next';
 
 const loginWrapperClass = css`
     padding-top: 50px;
@@ -24,7 +23,7 @@ const loginBtnClass = css`
     margin-top: 50px;
 `
 
-export const Login: React.FunctionComponent<WithNamespaces> = React.memo((props) => {
+export const LoginComponent: React.FunctionComponent = React.memo(() => {
     const history = useHistory();
     const [validated, setValidated] = React.useState(false)
 
@@ -61,5 +60,3 @@ export const Login: React.FunctionComponent<WithNamespaces> = React.memo((props)
         </div>
     );
 })
-
-export const LoginComponent =  withNamespaces()(Login);

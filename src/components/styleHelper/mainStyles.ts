@@ -11,7 +11,7 @@ injectGlobal`
     body {
         color: ${mainTextColor};
         background-color: ${mainBg};
-        font-family: "arian-amu";
+        font-family: "arian-amu", "Helvetica Neue",Arial,"Noto Sans",sans-serif;
     }
 `
 
