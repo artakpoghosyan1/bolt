@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "7dc086a9c07e3c9fe1b4eb16ef0bd863",
+    "revision": "4798d2ad75629fac105df0d8337b6ac4",
     "url": "/bolt/index.html"
   },
   {
-    "revision": "9ed7e39dea91b2d547df",
+    "revision": "a70ac8ae99ae2b3733dc",
     "url": "/bolt/static/css/2.af3c1da9.chunk.css"
   },
   {
-    "revision": "b95e018f0dcdda4c98f9",
-    "url": "/bolt/static/css/main.e13e69cb.chunk.css"
+    "revision": "4b3dcbfdb3419161b4c2",
+    "url": "/bolt/static/css/main.428184c4.chunk.css"
   },
   {
-    "revision": "9ed7e39dea91b2d547df",
-    "url": "/bolt/static/js/2.fd0ad30c.chunk.js"
+    "revision": "a70ac8ae99ae2b3733dc",
+    "url": "/bolt/static/js/2.cf48e6f3.chunk.js"
   },
   {
     "revision": "3453b8997016469371284a28c0e873e2",
-    "url": "/bolt/static/js/2.fd0ad30c.chunk.js.LICENSE.txt"
+    "url": "/bolt/static/js/2.cf48e6f3.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "b95e018f0dcdda4c98f9",
-    "url": "/bolt/static/js/main.1e1e2e34.chunk.js"
+    "revision": "4b3dcbfdb3419161b4c2",
+    "url": "/bolt/static/js/main.e59a6425.chunk.js"
   },
   {
     "revision": "2cb48fe687bc200fbf7d",
@@ -32,8 +32,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/bolt/static/media/Arian-AMU_v1.00816fb2.woff2"
   },
   {
-    "revision": "843007e11377f2adc9f6405cbb8695cb",
-    "url": "/bolt/static/media/Mardoto-Bold.843007e1.woff2"
+    "revision": "d41d8cd98f00b204e9800998ecf8427e",
+    "url": "/bolt/static/media/Mardoto-Bold.d41d8cd9.woff2"
   },
   {
     "revision": "5e98861f6ef1ce225121abfb3f418166",
