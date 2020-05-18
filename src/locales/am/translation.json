@@ -15,5 +15,7 @@
   "idramAccount": "Իդրամի հաշվեհամար",
   "remember": "Հիշել",
   "transferringAmount": "Փոխանցվող գումարը",
-  "prevTransfers": "նախկինում կատարած փոխանցումները"
+  "prevTransfers": "նախկինում կատարած փոխանցումները",
+  "phoneNumberError": "Այս դաշտ պետք է պարունակի 10 նիշ",
+  "passwordError": "Այս դաշտ պետք է պարունակի 6 նիշ"
 }

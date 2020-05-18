@@ -15,5 +15,7 @@
   "idramAccount": "Account number of Idram",
   "remember": "Remember",
   "transferringAmount": "Transferring amount",
-  "prevTransfers": "Transfers done before"
+  "prevTransfers": "Transfers done before",
+  "phoneNumberError": "This field must contain 10 characters",
+  "passwordError": "This field must contain 6 characters"
 }
