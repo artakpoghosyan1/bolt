@@ -9,6 +9,9 @@ import {TranslateComponent} from "./shared/TranslateComponent";
 import {ApiService} from "../shared/services/ApiService";
 import {StateContext} from "./App";
 import {ErrorMessageComponent} from "./shared/ErrorMessageComponent";
+import {deserializeUserData} from "../shared/helpers/deserializeData";
+import * as types from "../store/actions";
+import {getLocalStorage} from "../shared/utilities/localstorage";
 
 const loginWrapperClass = css`
     padding-top: 50px;
@@ -31,14 +34,15 @@ const loginBtnClass = css`
 const PHONE_MIN_LENGTH = 11
 const PASS_MIN_LENGTH = 6
 
+const storage = getLocalStorage()
+
 export const LoginComponent: React.FunctionComponent = React.memo(() => {
     const history = useHistory();
     const {t} = useTranslation();
-    // const {state, dispatch} = React.useContext(StateContext);
+    const {state, dispatch} = React.useContext(StateContext);
 
     const [isValidPassword, setIsValidPassword] = React.useState(true)
     const [isValidPhoneNumber, setIsValidPhoneNumber] = React.useState(true)
-    const [loginFailure, setLoginFailure] = React.useState<string | null>(null)
     const [phoneNumber, setPhoneNumber] = React.useState('')
     const [password, setPassword] = React.useState('')
 
@@ -50,21 +54,30 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
             return
         }
 
+        dispatch({type: types.TOGGLE_LOADING, payload: true})
         ApiService().fetchData(`http://localhost:8800/user/auth`, 'POST', {
             username: phoneNumber,
             password: password
-        }).then((data) => {
-            console.log(data)
-            // history.push('/menu')
-        }).catch((error) => {
-            phoneInputRef.current!.setCustomValidity(error.message)
-            setLoginFailure(error.message)
+        }).then((response) => {
+            const userData = deserializeUserData(response)
+            dispatch({type: types.SET_USER_DATA_SUCCESS, payload: userData})
+            dispatch({type: types.TOGGLE_LOADING, payload: false})
+            storage.setItem('user', {jwt: response.access_token, data: userData})
+            history.push('/menu')
+        }).catch(({error}) => {
+            dispatch({type: types.SET_USER_DATA_FAILURE, payload: error.error.data.message})
+            dispatch({type: types.TOGGLE_LOADING, payload: false})
+            phoneInputRef.current!.setCustomValidity(error.error.data.message)
         })
     }
 
+    React.useEffect(() => {
+        console.log(state)
+    }, [state])
+
     const validateInputs = () => {
         const validPhoneNumber = phoneNumber.length === PHONE_MIN_LENGTH
-        const validPassword = password.length === PASS_MIN_LENGTH
+        const validPassword = password.length >= PASS_MIN_LENGTH
 
         if (!validPhoneNumber) {
             phoneInputRef.current!.setCustomValidity('phoneNumberError')
@@ -81,15 +94,13 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
     }
 
     const phoneNumberOnChangeHandler = (event: any) => {
-        if(event.target.value.length <= PHONE_MIN_LENGTH) {
+        if (event.target.value.length <= PHONE_MIN_LENGTH) {
             setPhoneNumber(event.target.value)
         }
     }
 
     const passwordOnChangeHandler = (event: any) => {
-        if(event.target.value.length <= PASS_MIN_LENGTH) {
-            setPassword(event.target.value)
-        }
+        setPassword(event.target.value)
     }
 
     return (
@@ -99,9 +110,9 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
                 <p><TranslateComponent messageKey='loginDesc'/></p>
             </TitleComponent>
 
-            {loginFailure &&
+            {state.authenticationError &&
             <Alert variant='danger'>
-                {loginFailure}
+                {state.authenticationError}
             </Alert>
             }
 

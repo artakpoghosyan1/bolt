@@ -11,20 +11,30 @@ import '../fonts/fonts.css'
 import {TransferComponent} from "./TransferComponent";
 import {TransferHistoryComponent} from "./TransferHistoryComponent";
 import {HeaderComponent} from "./HeaderComponent";
+import {LoadingComponent} from "./LoadingComponent";
+import {getLocalStorage} from "../shared/utilities/localstorage";
+import {ProtectedRoute} from "./ProtectedRoute";
 
 const containerClass = css`
-    height: 100vh;
+    height: 100%;
     padding-top: 15px;
     padding-bottom: 15px;
     max-width: 480px;
+    position: relative;
 `
 
+const store = getLocalStorage()
+const userData = store.getItem('user')
+
 const initialState: IState = {
-    remaining: 55550,
-    transferHistories: [{amount: 5600, date: '02/03/2020'}, {amount: 600, date: '02/03/2020'}, {
-        amount: 16200,
-        date: '02/03/2020'
-    }]
+    transferHistories: [
+        {amount: 5600, date: '02/03/2020'},
+        {amount: 600, date: '02/03/2020'},
+        {amount: 16200, date: '02/03/2020'}
+    ],
+    authenticationError: null,
+    userData: userData ? userData.data : null,
+    isLoading: false
 }
 
 export const StateContext = React.createContext<{ state: IState, dispatch: React.Dispatch<IAction> | any }>(
@@ -44,17 +54,19 @@ const App: React.FunctionComponent = () => {
                         <Route exact strict path="/">
                             <LoginComponent/>
                         </Route>
-                        <Route exact path="/menu">
+                        <ProtectedRoute exact path="/menu" >
                             <MenuComponent/>
-                        </Route>
-                        <Route exact path="/transfer">
+                        </ProtectedRoute>
+                        <ProtectedRoute exact path="/transfer">
                             <TransferComponent/>
-                        </Route>
-                        <Route exact path="/transfer-history">
+                        </ProtectedRoute>
+                        <ProtectedRoute exact path="/transfer-history">
                             <TransferHistoryComponent/>
-                        </Route>
+                        </ProtectedRoute>
                     </Switch>
                 </Router>
+
+                <LoadingComponent isLoading={state.isLoading}/>
             </Container>
         </StateContext.Provider>
     );

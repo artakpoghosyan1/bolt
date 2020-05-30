@@ -1,6 +1,9 @@
 import {ITransferHistory} from "../shared/models/ITransferHistory";
+import {IUser} from "../shared/models/IUser";
 
 export interface IState {
-    remaining: number,
+    authenticationError: string | null
+    userData: IUser | null
     transferHistories: ITransferHistory[]
+    isLoading: boolean
 }

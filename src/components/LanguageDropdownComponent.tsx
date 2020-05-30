@@ -6,11 +6,13 @@ import {useTranslation} from "react-i18next";
 import am from "../assets/am.png";
 import ru from "../assets/ru.png";
 import en from "../assets/en.png";
-import {getLocalStorage} from "../shared/models/localstorage";
+import {getLocalStorage} from "../shared/utilities/localstorage";
 
 const langDropdownClass = css`
     margin-right: 20px;
     width: auto;
+    min-width: unset !important;
+    
     button {
         border: none;   
         background: none;
@@ -61,7 +63,7 @@ export const LanguageDropdownComponent: React.FunctionComponent = React.memo(() 
     const [currentFlag, setCurrentFlag] = React.useState(langFromStorage ? flags[langFromStorage] : am)
 
     const onLanguageChange = (lang: string): void => {
-        i18n.changeLanguage(lang);
+        i18n.changeLanguage(lang)
         setCurrentFlag(flags[lang])
         storage.setItem('lang', lang)
     }

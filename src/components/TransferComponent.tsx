@@ -11,7 +11,7 @@ import {
     verticalCenteredLayoutClass
 } from "./styleHelper/mainStyles";
 import {TitleComponent} from "./shared/TitleComponent";
-import {getLocalStorage} from "../shared/models/localstorage";
+import {getLocalStorage} from "../shared/utilities/localstorage";
 import {TranslateComponent} from "./shared/TranslateComponent";
 import {useTranslation} from "react-i18next";
 
@@ -48,7 +48,7 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
         setIsChecked(event.target.checked)
     }
 
-    const disableTransfer = state.remaining <= MIN_REMAINING
+    const disableTransfer = state.userData!.balance <= MIN_REMAINING
 
     return <div className={`${verticalCenteredLayoutClass} transfer-wrapper`}>
         <TitleComponent>

@@ -6,7 +6,7 @@ import {TitleComponent} from "./shared/TitleComponent";
 import {Button} from "react-bootstrap";
 import {secondaryBtnClass} from "./styleHelper/mainStyles";
 import {FaDollarSign, FaHistory} from 'react-icons/fa';
-import {formatter} from "../shared/helpers/formatter";
+import {formatter} from "../shared/utilities/formatter";
 import {TranslateComponent} from "./shared/TranslateComponent";
 
 const menuClass = css`
@@ -47,7 +47,7 @@ export const MenuComponent: React.FunctionComponent = React.memo(props => {
 
     return <div className={menuClass}>
         <TitleComponent secondary>
-            {formatter(state.remaining)}
+            {formatter(state.userData!.balance)}
             <span className={currencyClass}>
                 <TranslateComponent messageKey='currency'/>
             </span>

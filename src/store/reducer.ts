@@ -15,6 +15,28 @@ export const reducer = (state: IState, action: IAction) => {
             }
         }
 
+
+        case actionTypes.SET_USER_DATA_SUCCESS: {
+            return {
+                ...state,
+                userData: action.payload
+            }
+        }
+
+        case actionTypes.SET_USER_DATA_FAILURE: {
+            return {
+                ...state,
+                authenticationError: action.payload
+            }
+        }
+
+        case actionTypes.TOGGLE_LOADING: {
+            return {
+                ...state,
+                isLoading: action.payload
+            }
+        }
+
         default: {
             return state
         }

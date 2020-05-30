@@ -13,6 +13,10 @@ injectGlobal`
         background-color: ${mainBg};
         font-family: "arian-amu", "Helvetica Neue",Arial,"Noto Sans",sans-serif;
     }
+    
+    #root, body, html {
+        height: 100%;
+    }
 `
 
 export const inputClass = css`

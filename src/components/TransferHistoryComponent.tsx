@@ -4,7 +4,7 @@ import {TitleComponent} from "./shared/TitleComponent";
 import {StateContext} from "./App";
 import {ITransferHistory} from "../shared/models/ITransferHistory";
 import {mainColor} from "../constants/colors";
-import {formatter} from "../shared/helpers/formatter";
+import {formatter} from "../shared/utilities/formatter";
 import {TranslateComponent} from "./shared/TranslateComponent";
 
 const amountClass = css`
