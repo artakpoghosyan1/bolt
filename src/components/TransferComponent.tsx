@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Alert, Button, Form} from "react-bootstrap";
 import {css} from "emotion";
-import {StateContext} from "./App";
+import {StateContext} from "../index"
 import {MIN_REMAINING} from "../constants/minRemaining";
 import {
     centerClass,

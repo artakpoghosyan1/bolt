@@ -1,7 +1,7 @@
 import * as React from "react";
 import {css} from "emotion";
 import {TitleComponent} from "./shared/TitleComponent";
-import {StateContext} from "./App";
+import {StateContext} from "../index"
 import {ITransferHistory} from "../shared/models/ITransferHistory";
 import {mainColor} from "../constants/colors";
 import {formatter} from "../shared/utilities/formatter";

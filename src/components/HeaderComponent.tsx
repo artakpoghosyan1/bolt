@@ -1,6 +1,6 @@
 import * as React from "react";
 import {IoIosArrowBack, RiLogoutCircleRLine} from "react-icons/all";
-import {withRouter, useHistory} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import {RouteComponentProps} from "react-router";
 import {resetButtonDefaultStyles} from "./styleHelper/mainStyles";
 import {mainTextColor} from "../constants/colors";
@@ -9,8 +9,9 @@ import {css} from "emotion";
 import {LanguageDropdownComponent} from "./LanguageDropdownComponent";
 import {useTranslation} from "react-i18next";
 import {getLocalStorage} from "../shared/utilities/localstorage";
-import {StateContext} from "./App";
-
+import {StateContext} from "../index"
+import {useLogin} from "./hooks/useLogin";
+import {loginIntervalId} from "./App";
 
 interface IHeaderComponent extends RouteComponentProps {
 }
@@ -43,8 +44,8 @@ const storage = getLocalStorage()
 const Header: React.FunctionComponent<IHeaderComponent> = React.memo((props) => {
     const {state} = React.useContext(StateContext);
     const canGoBack = props.location.pathname !== '/' && props.location.pathname !== '/menu'
-    const history = useHistory()
     const {t} = useTranslation()
+    const {logout, isLoggedIn} = useLogin()
 
     const goBackHandler = () => {
         if (canGoBack) {
@@ -52,9 +53,9 @@ const Header: React.FunctionComponent<IHeaderComponent> = React.memo((props) => 
         }
     }
 
-    const logoutHandler = () => {
-        storage.removeItem('user')
-        history.push('/')
+    const onLogoutClickHandler = () => {
+        logout()
+        clearInterval(loginIntervalId)
     }
 
     return <header className={headerClass}>
@@ -64,14 +65,15 @@ const Header: React.FunctionComponent<IHeaderComponent> = React.memo((props) => 
         </button>
         }
 
+        {isLoggedIn() &&
         <div className={userNameClass}>
             {state.userData!.fullName}
         </div>
-
+        }
         <LanguageDropdownComponent/>
 
-        <button className={`${resetButtonDefaultStyles} ${logoutBtnClass}`} onClick={logoutHandler}>
-             {t('logout')} <RiLogoutCircleRLine size={27} color={mainTextColor}/>
+        <button className={`${resetButtonDefaultStyles} ${logoutBtnClass}`} onClick={onLogoutClickHandler}>
+            {t('logout')} <RiLogoutCircleRLine size={27} color={mainTextColor}/>
         </button>
     </header>
 })

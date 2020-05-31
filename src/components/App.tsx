@@ -4,8 +4,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import {LoginComponent} from "./LoginComponent";
 import {Container} from "react-bootstrap";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
-import {IState} from "../store/IState";
-import {IAction, reducer} from "../store/reducer";
 import {MenuComponent} from "./MenuComponent";
 import '../fonts/fonts.css'
 import {TransferComponent} from "./TransferComponent";
@@ -14,6 +12,8 @@ import {HeaderComponent} from "./HeaderComponent";
 import {LoadingComponent} from "./LoadingComponent";
 import {getLocalStorage} from "../shared/utilities/localstorage";
 import {ProtectedRoute} from "./ProtectedRoute";
+import {useLogin} from "./hooks/useLogin";
+import {StateContext} from "../index";
 
 const containerClass = css`
     height: 100%;
@@ -23,52 +23,48 @@ const containerClass = css`
     position: relative;
 `
 
-const store = getLocalStorage()
-const userData = store.getItem('user')
+const storage = getLocalStorage()
 
-const initialState: IState = {
-    transferHistories: [
-        {amount: 5600, date: '02/03/2020'},
-        {amount: 600, date: '02/03/2020'},
-        {amount: 16200, date: '02/03/2020'}
-    ],
-    authenticationError: null,
-    userData: userData ? userData.data : null,
-    isLoading: false
-}
-
-export const StateContext = React.createContext<{ state: IState, dispatch: React.Dispatch<IAction> | any }>(
-    {state: initialState, dispatch: null}
-)
+export let loginIntervalId: any
 
 const App: React.FunctionComponent = () => {
-    const [state, dispatch] = React.useReducer(reducer, initialState)
+    const {isLoggedIn, login} = useLogin()
+    const {state} = React.useContext(StateContext);
+
+    React.useEffect(() => {
+        if (isLoggedIn()) {
+            loginIntervalId = setInterval(() => {
+                const credentials = storage.getItem('credentials')
+                login(credentials.username, credentials.password)
+            }, 13*60*1000)
+        }
+
+        return () => clearInterval(loginIntervalId)
+    })
 
     return (
-        <StateContext.Provider value={{state, dispatch: dispatch!}}>
-            <Container className={containerClass}>
-                <Router basename={'bolt'}>
-                    <HeaderComponent/>
+        <Container className={containerClass}>
+            <Router basename={'bolt'}>
+                <HeaderComponent/>
 
-                    <Switch>
-                        <Route exact strict path="/">
-                            <LoginComponent/>
-                        </Route>
-                        <ProtectedRoute exact path="/menu" >
-                            <MenuComponent/>
-                        </ProtectedRoute>
-                        <ProtectedRoute exact path="/transfer">
-                            <TransferComponent/>
-                        </ProtectedRoute>
-                        <ProtectedRoute exact path="/transfer-history">
-                            <TransferHistoryComponent/>
-                        </ProtectedRoute>
-                    </Switch>
-                </Router>
+                <Switch>
+                    <Route exact strict path="/">
+                        <LoginComponent/>
+                    </Route>
+                    <ProtectedRoute exact path="/menu">
+                        <MenuComponent/>
+                    </ProtectedRoute>
+                    <ProtectedRoute exact path="/transfer">
+                        <TransferComponent/>
+                    </ProtectedRoute>
+                    <ProtectedRoute exact path="/transfer-history">
+                        <TransferHistoryComponent/>
+                    </ProtectedRoute>
+                </Switch>
+            </Router>
 
-                <LoadingComponent isLoading={state.isLoading}/>
-            </Container>
-        </StateContext.Provider>
+            <LoadingComponent isLoading={state.isLoading}/>
+        </Container>
     );
 }
 

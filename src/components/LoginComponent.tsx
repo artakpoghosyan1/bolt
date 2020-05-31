@@ -1,17 +1,14 @@
 import * as React from "react";
+import {useHistory} from "react-router-dom";
 import {Alert, Button, Form} from "react-bootstrap";
 import {css} from "emotion";
-import {useHistory} from "react-router-dom";
 import {inputClass, lgMarginBottomClass, mainBtnClass} from "./styleHelper/mainStyles";
 import {TitleComponent} from "./shared/TitleComponent";
 import {useTranslation} from "react-i18next";
 import {TranslateComponent} from "./shared/TranslateComponent";
-import {ApiService} from "../shared/services/ApiService";
-import {StateContext} from "./App";
+import {StateContext} from "../index"
 import {ErrorMessageComponent} from "./shared/ErrorMessageComponent";
-import {deserializeUserData} from "../shared/helpers/deserializeData";
-import * as types from "../store/actions";
-import {getLocalStorage} from "../shared/utilities/localstorage";
+import {useLogin} from "./hooks/useLogin";
 
 const loginWrapperClass = css`
     padding-top: 50px;
@@ -34,12 +31,10 @@ const loginBtnClass = css`
 const PHONE_MIN_LENGTH = 11
 const PASS_MIN_LENGTH = 6
 
-const storage = getLocalStorage()
-
 export const LoginComponent: React.FunctionComponent = React.memo(() => {
-    const history = useHistory();
     const {t} = useTranslation();
-    const {state, dispatch} = React.useContext(StateContext);
+    const {state} = React.useContext(StateContext);
+    const history = useHistory()
 
     const [isValidPassword, setIsValidPassword] = React.useState(true)
     const [isValidPhoneNumber, setIsValidPhoneNumber] = React.useState(true)
@@ -49,31 +44,21 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
     const passwordInputRef: React.RefObject<HTMLInputElement> = React.useRef(null)
     const phoneInputRef: React.RefObject<HTMLInputElement> = React.useRef(null)
 
+    const {error, login} = useLogin()
+
     const onSubmitHandler = (): void => {
         if (validateInputs()) {
             return
         }
 
-        dispatch({type: types.TOGGLE_LOADING, payload: true})
-        ApiService().fetchData(`http://localhost:8800/user/auth`, 'POST', {
-            username: phoneNumber,
-            password: password
-        }).then((response) => {
-            const userData = deserializeUserData(response)
-            dispatch({type: types.SET_USER_DATA_SUCCESS, payload: userData})
-            dispatch({type: types.TOGGLE_LOADING, payload: false})
-            storage.setItem('user', {jwt: response.access_token, data: userData})
+        login(phoneNumber, password).then(() => {
             history.push('/menu')
-        }).catch(({error}) => {
-            dispatch({type: types.SET_USER_DATA_FAILURE, payload: error.error.data.message})
-            dispatch({type: types.TOGGLE_LOADING, payload: false})
-            phoneInputRef.current!.setCustomValidity(error.error.data.message)
         })
     }
 
     React.useEffect(() => {
-        console.log(state)
-    }, [state])
+        phoneInputRef.current!.setCustomValidity(error)
+    }, [error])
 
     const validateInputs = () => {
         const validPhoneNumber = phoneNumber.length === PHONE_MIN_LENGTH

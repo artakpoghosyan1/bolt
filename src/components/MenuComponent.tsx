@@ -1,6 +1,6 @@
 import * as React from "react";
 import {css} from "emotion";
-import {StateContext} from './App';
+import {StateContext} from "../index"
 import {useHistory} from "react-router-dom";
 import {TitleComponent} from "./shared/TitleComponent";
 import {Button} from "react-bootstrap";
