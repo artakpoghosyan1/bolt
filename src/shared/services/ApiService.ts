@@ -1,12 +1,21 @@
 import {responseHandler} from './ResponseHandler'
+const url = 'https://bolt-lider.herokuapp.com/'
 
 export function ApiService() {
-    const fetchData = (url: string, method: string, data?: object) => {
-        let options
+    const fetchData = (
+        endpoint: string,
+        method: string = 'GET',
+        jwt: string | null = null,
+        data?: object
+    ) => {
+        let options: any
+        const authorization = jwt ? {'Authorization': `Bearer ${jwt}`} : {}
+
         const generalOptions = {
             method: method,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                ...authorization
             }
         }
 
@@ -21,7 +30,7 @@ export function ApiService() {
             }
         }
 
-        return fetch(url, options).then(
+        return fetch(`${url}${endpoint}`, options).then(
             responseHandler.success,
             responseHandler.failure
         )

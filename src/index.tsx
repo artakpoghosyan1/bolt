@@ -9,16 +9,15 @@ import {getLocalStorage} from "./shared/utilities/localstorage";
 
 const storage = getLocalStorage()
 const userData = storage.getItem('user')
+const balance = storage.getItem('balance')
+const transferHistory = storage.getItem('transferHistory')
 
 const initialState: IState = {
-    transferHistories: [
-        {amount: 5600, date: '02/03/2020'},
-        {amount: 600, date: '02/03/2020'},
-        {amount: 16200, date: '02/03/2020'}
-    ],
+    transferHistories: transferHistory ? transferHistory : [],
     authenticationError: null,
     userData: userData ? userData.data : null,
-    isLoading: false
+    isLoading: false,
+    balance: balance ? balance : null
 }
 
 export const StateContext = React.createContext<{ state: IState, dispatch: React.Dispatch<IAction> | any }>(

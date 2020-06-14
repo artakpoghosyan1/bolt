@@ -4,6 +4,7 @@ interface IGetLocalStorage {
     setItem: (key: string, item: any) => void
     getItem: (key: string) => any
     removeItem: (key: string) => void
+    clear: () => void
 }
 
 export function getLocalStorage(): IGetLocalStorage {
@@ -20,9 +21,14 @@ export function getLocalStorage(): IGetLocalStorage {
         localStorage.removeItem(`${STORAGE_PREFIX}_${key}`)
     }
 
+    const clear = (): void => {
+        localStorage.clear()
+    }
+
     return {
         setItem,
         getItem,
-        removeItem
+        removeItem,
+        clear
     }
 }

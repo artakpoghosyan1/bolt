@@ -1,4 +1,4 @@
-import {css, injectGlobal} from "emotion";
+import {css, injectGlobal, keyframes} from "emotion";
 import {
     inputFocusedShadowColor, inputOutlineColor,
     inputShadowColor,
@@ -16,6 +16,16 @@ injectGlobal`
     
     #root, body, html {
         height: 100%;
+    }
+`
+
+export const rotateAnimation = keyframes`
+    0% {
+        transform: rotate(0) 
+    }
+    
+    100% {
+        transform: rotate(360deg) 
     }
 `
 

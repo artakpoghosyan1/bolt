@@ -1,20 +1,14 @@
 import * as React from 'react'
 import {RiLoader2Line} from "react-icons/all";
-import {css, keyframes} from "emotion";
+import {css} from "emotion";
 import {mainColor} from "../constants/colors";
+import {rotateAnimation} from "./styleHelper/mainStyles";
 
 interface ILoadingComponentProps {
     isLoading: boolean
+    size?: string
+    className?: string
 }
-const loadingRotate = keyframes`
-    0% {
-        transform: rotate(0) 
-    }
-    
-    100% {
-        transform: rotate(360deg) 
-    }
-`
 
 const loadingClass = css`
     align-items: center;
@@ -29,11 +23,15 @@ const loadingClass = css`
 `
 
 const loadingIconClass = css`
-    animation: ${loadingRotate} 1.4s infinite linear;
+    animation: ${rotateAnimation} 1.4s infinite linear;
 `
 
 export const LoadingComponent: React.FunctionComponent<ILoadingComponentProps> = React.memo(props => {
-    return props.isLoading ? <div className={loadingClass}>
-        <RiLoader2Line size='80px' color={mainColor} className={loadingIconClass}/>
+    return props.isLoading ? <div className={`${loadingClass} ${props.className}`}>
+        <RiLoader2Line size={props.size} color={mainColor} className={loadingIconClass}/>
     </div> : null
 })
+
+LoadingComponent.defaultProps = {
+    size: '80px'
+}

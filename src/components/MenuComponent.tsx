@@ -8,10 +8,11 @@ import {secondaryBtnClass} from "./styleHelper/mainStyles";
 import {FaDollarSign, FaHistory} from 'react-icons/fa';
 import {formatter} from "../shared/utilities/formatter";
 import {TranslateComponent} from "./shared/TranslateComponent";
-
-const menuClass = css`
-    
-`
+import {getLocalStorage} from "../shared/utilities/localstorage";
+import {LoadingComponent} from "./LoadingComponent";
+import {ApiService} from "../shared/services/ApiService";
+import {SET_BALANCE_SUCCESS} from "../store/actions";
+import {RefreshBalanceButtonComponent} from "./RefreshBalanceButtonComponent";
 
 const menuItemClass = css`    
     & + & {
@@ -31,10 +32,18 @@ const menuItemIconsClass = css`
 const currencyClass = css`
     text-transform: lowercase;
     font-size: 18px;
+    position: relative;
 `
 
+const balanceLoaderClass = css`
+    position: static;
+`
+
+const storage = getLocalStorage()
+
 export const MenuComponent: React.FunctionComponent = React.memo(props => {
-    const {state} = React.useContext(StateContext);
+    const [isRefreshingBalance, setIsRefreshingBalance] = React.useState(false)
+    const {state, dispatch} = React.useContext(StateContext);
     const history = useHistory()
 
     const redirectToTransferPage = () => {
@@ -45,12 +54,33 @@ export const MenuComponent: React.FunctionComponent = React.memo(props => {
         history.push('./transfer-history')
     }
 
-    return <div className={menuClass}>
+    const refreshClickHandler = React.useCallback(() => {
+        setIsRefreshingBalance(true)
+        const user = storage.getItem('user')
+
+        ApiService().fetchData('balance', 'GET', user ? user.jwt : null).then(({balance}) => {
+            dispatch({type: SET_BALANCE_SUCCESS, payload: balance})
+            storage.setItem('balance', balance)
+            setIsRefreshingBalance(false)
+        }, () => setIsRefreshingBalance(false))
+    }, [])
+
+    return <React.Fragment>
         <TitleComponent secondary>
-            {formatter(state.userData!.balance)}
-            <span className={currencyClass}>
-                <TranslateComponent messageKey='currency'/>
-            </span>
+            {state.balance ?
+                <>
+                    {formatter(state.balance!)}
+
+                    <span className={currencyClass}>
+                        <TranslateComponent messageKey='currency'/>
+
+                        <RefreshBalanceButtonComponent isRefreshingBalance={isRefreshingBalance} onClick={refreshClickHandler}/>
+                    </span>
+                </> :
+
+                <LoadingComponent className={balanceLoaderClass} isLoading={true} size='32px'/>
+            }
+
             <p className={remainingClass}>
                 <TranslateComponent messageKey='remaining'/>
             </p>
@@ -65,5 +95,5 @@ export const MenuComponent: React.FunctionComponent = React.memo(props => {
             <FaHistory className={menuItemIconsClass}/>
             <TranslateComponent messageKey='transferHistory'/>
         </Button>
-    </div>
+    </React.Fragment>
 })

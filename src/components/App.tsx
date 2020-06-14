@@ -24,23 +24,27 @@ const containerClass = css`
 `
 
 const storage = getLocalStorage()
-
 export let loginIntervalId: any
 
 const App: React.FunctionComponent = () => {
-    const {isLoggedIn, login} = useLogin()
+    const {login} = useLogin()
     const {state} = React.useContext(StateContext);
 
     React.useEffect(() => {
-        if (isLoggedIn()) {
+        if (state.userData) {
             loginIntervalId = setInterval(() => {
                 const credentials = storage.getItem('credentials')
-                login(credentials.username, credentials.password)
-            }, 13*60*1000)
-        }
 
+                login(credentials.username, credentials.password).then(({access_token}) => {
+                    storage.setItem('user', {jwt: access_token, data: state.userData})
+                }, (error) => {
+                    console.log('auth error', error)
+                })
+            }, 13000)
+
+        }
         return () => clearInterval(loginIntervalId)
-    })
+    }, [state.userData])
 
     return (
         <Container className={containerClass}>

@@ -6,6 +6,7 @@ import {ITransferHistory} from "../shared/models/ITransferHistory";
 import {mainColor} from "../constants/colors";
 import {formatter} from "../shared/utilities/formatter";
 import {TranslateComponent} from "./shared/TranslateComponent";
+import Alert from "react-bootstrap/Alert";
 
 const amountClass = css`
     color: ${mainColor};
@@ -37,12 +38,12 @@ export const TransferHistoryComponent: React.FunctionComponent = React.memo(prop
 
     return <div>
         <TitleComponent>
-            <TranslateComponent messageKey='transferHistory' />
+            <TranslateComponent messageKey='transferHistory'/>
             <p><TranslateComponent messageKey='prevTransfers'/></p>
         </TitleComponent>
 
-        <div>
-            {state.transferHistories.map((transfer: ITransferHistory, index: number) => (
+        {state.transferHistories.length ?
+            state.transferHistories.map((transfer: ITransferHistory, index: number) => (
                 <div className={transferItemClass} key={index}>
                     <span className={amountClass}>
                         {formatter(transfer.amount)}
@@ -50,7 +51,10 @@ export const TransferHistoryComponent: React.FunctionComponent = React.memo(prop
                     </span>
                     <span className={dateClass}>{transfer.date}</span>
                 </div>
-            ))}
-        </div>
+            )) :
+            <Alert variant='info'>
+                <TranslateComponent messageKey='noTransferHistory'/>
+            </Alert>
+        }
     </div>
 })

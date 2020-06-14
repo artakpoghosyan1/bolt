@@ -15,6 +15,7 @@ const titleClass = css`
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
+    position: relative;
     
     p {
         font-size: 14px;

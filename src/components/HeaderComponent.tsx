@@ -7,11 +7,10 @@ import {mainTextColor} from "../constants/colors";
 import {css} from "emotion";
 
 import {LanguageDropdownComponent} from "./LanguageDropdownComponent";
-import {useTranslation} from "react-i18next";
-import {getLocalStorage} from "../shared/utilities/localstorage";
 import {StateContext} from "../index"
 import {useLogin} from "./hooks/useLogin";
 import {loginIntervalId} from "./App";
+import {TranslateComponent} from "./shared/TranslateComponent";
 
 interface IHeaderComponent extends RouteComponentProps {
 }
@@ -39,12 +38,9 @@ const backBtnClass = css`
     margin-right: 20px;
 `
 
-const storage = getLocalStorage()
-
 const Header: React.FunctionComponent<IHeaderComponent> = React.memo((props) => {
     const {state} = React.useContext(StateContext);
     const canGoBack = props.location.pathname !== '/' && props.location.pathname !== '/menu'
-    const {t} = useTranslation()
     const {logout, isLoggedIn} = useLogin()
 
     const goBackHandler = () => {
@@ -73,7 +69,7 @@ const Header: React.FunctionComponent<IHeaderComponent> = React.memo((props) => 
         <LanguageDropdownComponent/>
 
         <button className={`${resetButtonDefaultStyles} ${logoutBtnClass}`} onClick={onLogoutClickHandler}>
-            {t('logout')} <RiLogoutCircleRLine size={27} color={mainTextColor}/>
+            <TranslateComponent messageKey='logout'/> <RiLogoutCircleRLine size={27} color={mainTextColor}/>
         </button>
     </header>
 })

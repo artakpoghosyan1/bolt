@@ -8,13 +8,12 @@ export interface IAction {
 
 export const reducer = (state: IState, action: IAction) => {
     switch(action.type) {
-        case actionTypes.SET_REMAINING: {
+        case actionTypes.SET_BALANCE_SUCCESS: {
             return {
                 ...state,
-                remaining: action.payload
+                balance: action.payload
             }
         }
-
 
         case actionTypes.SET_USER_DATA_SUCCESS: {
             return {
@@ -27,6 +26,13 @@ export const reducer = (state: IState, action: IAction) => {
             return {
                 ...state,
                 authenticationError: action.payload
+            }
+        }
+
+        case actionTypes.SET_TRANSFER_SUCCESS: {
+            return {
+                ...state,
+                transferHistories: action.payload
             }
         }
 

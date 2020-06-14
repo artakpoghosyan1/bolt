@@ -11,23 +11,21 @@ import {IUser} from "../../shared/models/IUser";
 const storage = getLocalStorage()
 
 interface IUseLogin {
-    response: IUser | null
     error: any
-    login: (username: string, password: string) => Promise<IUser | null>
+    login: (username: string, password: string) => Promise<IUser | null | any>
     isLoggedIn: () => boolean
     logout: () => void
 }
 
 export function useLogin(): IUseLogin {
     const {dispatch} = React.useContext(StateContext);
-    const [response, setResponse] = React.useState<IUser | null>(null)
     const [error, setError] = React.useState<any>(null)
     const history = useHistory()
 
     const login = (username: string, password: string): Promise<IUser | any> => {
         dispatch({type: types.TOGGLE_LOADING, payload: true})
 
-        return ApiService().fetchData(`http://localhost:8800/user/auth`, 'POST', {
+        return ApiService().fetchData(`user/auth`, 'POST', null, {
             username,
             password
         }).then((response) => {
@@ -36,11 +34,15 @@ export function useLogin(): IUseLogin {
             dispatch({type: types.TOGGLE_LOADING, payload: false})
             storage.setItem('user', {jwt: response.access_token, data: userData})
             storage.setItem('credentials', {username, password})
-            setResponse(userData)
-        }).catch(({error}) => {
-            dispatch({type: types.SET_USER_DATA_FAILURE, payload: error.error.data.message})
+            return response
+        }, (error) => {
+            const {error: data} = error
+            dispatch({type: types.SET_USER_DATA_FAILURE, payload: data.message})
             dispatch({type: types.TOGGLE_LOADING, payload: false})
-            setError(error.error.data.message)
+            setError(data.message)
+            return error
+        }).catch((error) => {
+            console.log('unhandled error', error)
         })
     }
 
@@ -49,10 +51,9 @@ export function useLogin(): IUseLogin {
     }
 
     const logout = () => {
-        storage.removeItem('user')
-        storage.removeItem('credentials')
+        storage.clear()
         history.push('/')
     }
 
-    return {response, error, login, isLoggedIn, logout}
+    return {error, login, isLoggedIn, logout}
 }

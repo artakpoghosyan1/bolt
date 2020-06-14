@@ -18,5 +18,7 @@
   "prevTransfers": "Transfers done before",
   "phoneNumberError": "This field must contain 10 characters",
   "passwordError": "This field must contain 6 characters",
-  "logout": "Logout"
+  "logout": "Logout",
+  "transferErrorMessage": "You don't have enough money on your account (the minimal amount: 1000dr)",
+  "noTransferHistory": "You do not have any previous transfers"
 }
