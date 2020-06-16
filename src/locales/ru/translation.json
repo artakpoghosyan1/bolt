@@ -1,3 +1,25 @@
 {
-  "aaaa": "----------"
+  "login": "Вход",
+  "loginTo": "Входить",
+  "loginDesc": "Введите свои данные  Bolt для входа",
+  "phoneNumber": "Телефонный номер",
+  "password": "Пароль",
+  "forgotPass": "Забыли пароль?",
+  "remaining": "Баланс вашего счёта",
+  "transfer": "Перевести",
+  "transferAmount": "Перевести допустимые деньги",
+  "transferFromAvailable": "Перевод допустимых денег",
+  "transferHistory": "Истории переводов",
+  "currency": "др",
+  "dontHaveEnoughMoney": "У вас нет достаточных средств на счету",
+  "idramAccount": "Счёт Идрама",
+  "remember": "Запомнить",
+  "transferringAmount": "Переводимая сумма",
+  "prevTransfers": "предыдущие переводы",
+  "phoneNumberError": "Это поле должно содержать 10 символов",
+  "passwordError": "Это поле должно содержать 6 символов",
+  "logout": "Выход",
+  "transferErrorMessage": "На вашем счету недостаточно средств (минимальное остаток 1000др)",
+  "noTransferHistory": "Вы не имеете предыдущие переводы",
+  "viewVideo": "Смотреть видео"
 }

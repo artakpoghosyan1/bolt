@@ -20,5 +20,6 @@
   "passwordError": "This field must contain 6 characters",
   "logout": "Logout",
   "transferErrorMessage": "You don't have enough money on your account (the minimal amount: 1000dr)",
-  "noTransferHistory": "You do not have any previous transfers"
+  "noTransferHistory": "You do not have any previous transfers",
+  "viewVideo": "Video tutorial"
 }

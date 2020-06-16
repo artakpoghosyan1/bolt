@@ -13,6 +13,8 @@ import {LoadingComponent} from "./LoadingComponent";
 import {ApiService} from "../shared/services/ApiService";
 import {SET_BALANCE_SUCCESS} from "../store/actions";
 import {RefreshBalanceButtonComponent} from "./RefreshBalanceButtonComponent";
+import {MdSlowMotionVideo} from "react-icons/all";
+import {VideoTutorialComponent} from "./VideoTutorialComponent";
 
 const menuItemClass = css`    
     & + & {
@@ -43,6 +45,7 @@ const storage = getLocalStorage()
 
 export const MenuComponent: React.FunctionComponent = React.memo(props => {
     const [isRefreshingBalance, setIsRefreshingBalance] = React.useState(false)
+    const [openVideo, setOpenVideo] = React.useState(false)
     const {state, dispatch} = React.useContext(StateContext);
     const history = useHistory()
 
@@ -64,6 +67,14 @@ export const MenuComponent: React.FunctionComponent = React.memo(props => {
             setIsRefreshingBalance(false)
         }, () => setIsRefreshingBalance(false))
     }, [])
+
+    const openVideoHandler = () => {
+        setOpenVideo(true)
+    }
+
+    const closeVideoHandler = () => {
+        setOpenVideo(false)
+    }
 
     return <React.Fragment>
         <TitleComponent secondary>
@@ -95,5 +106,13 @@ export const MenuComponent: React.FunctionComponent = React.memo(props => {
             <FaHistory className={menuItemIconsClass}/>
             <TranslateComponent messageKey='transferHistory'/>
         </Button>
+
+        <Button className={`${menuItemClass} ${secondaryBtnClass}`} onClick={openVideoHandler}>
+            <MdSlowMotionVideo className={menuItemIconsClass}/>
+            <TranslateComponent messageKey='viewVideo'/>
+        </Button>
+
+
+        <VideoTutorialComponent show={openVideo} onHide={closeVideoHandler}/>
     </React.Fragment>
 })

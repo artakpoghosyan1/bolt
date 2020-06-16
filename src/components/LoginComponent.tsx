@@ -83,9 +83,9 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
     }
 
     const phoneNumberOnChangeHandler = (event: any) => {
-        if (event.target.value.length >= PHONE_MIN_LENGTH) {
+        // if (event.target.value.length >= PHONE_MIN_LENGTH) {
             setPhoneNumber(event.target.value)
-        }
+        // }
     }
 
     const passwordOnChangeHandler = (event: any) => {

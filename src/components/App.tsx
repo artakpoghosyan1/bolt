@@ -38,8 +38,7 @@ const App: React.FunctionComponent = () => {
                     username: credentials.username,
                     password: credentials.password
                 })
-            }, 13 * 60)
-
+            }, (13 * 60) * 1000)
         }
         return () => clearInterval(loginIntervalId)
     }, [])

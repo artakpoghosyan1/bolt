@@ -21,7 +21,7 @@ const closeBtnClass = css`
 export const WarningModalComponent: React.FunctionComponent<IWarningModalComponentProps> = React.memo(props => {
     return <Modal show={props.show} className={modalClass}>
         <Modal.Body>
-            <p>
+            <p className='text-center'>
                 <TranslateComponent messageKey='transferErrorMessage'/>
             </p>
         </Modal.Body>
