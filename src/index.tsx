@@ -17,7 +17,7 @@ const initialState: IState = {
     authenticationError: null,
     userData: userData ? userData.data : null,
     isLoading: false,
-    balance: balance ? balance : null
+    balance: '3000'
 }
 
 export const StateContext = React.createContext<{ state: IState, dispatch: React.Dispatch<IAction> | any }>(

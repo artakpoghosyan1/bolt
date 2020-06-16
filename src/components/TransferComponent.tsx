@@ -47,25 +47,33 @@ const infoIconClass = css`
 `
 
 const storage = getLocalStorage()
+const MIN_BALANCE_AMOUNT = 1000
 
 export const TransferComponent: React.FunctionComponent = React.memo(props => {
     const [validated, setValidated] = React.useState(false)
     const [isChecked, setIsChecked] = React.useState(!!storage.getItem('remember'))
     const [showModal, setShowModal] = React.useState<boolean>(false)
+    const [accountId, setAccountId] = React.useState<string>('')
+    const [amount, setAmount] = React.useState<string>('')
     const {state} = React.useContext(StateContext);
-    const accountId: React.RefObject<HTMLInputElement> = React.useRef(null)
     const {t} = useTranslation();
 
     const onSubmitHandler = () => {
         setValidated(true)
 
-        storage.setItem('remember', isChecked)
-
-        if (isChecked) {
-            storage.setItem('accountId', accountId.current!.value)
-        } else {
-            storage.removeItem('accountId')
+        if((+state.balance! - +amount) <= MIN_BALANCE_AMOUNT) {
+            setShowModal(true)
+            return
         }
+
+
+
+        // storage.setItem('remember', isChecked)
+        // if (isChecked) {
+        //     // storage.setItem('accountId', accountId.current!.value)
+        // } else {
+        //     storage.removeItem('accountId')
+        // }
     }
 
     const checkOnchangeHandler = (event: any) => {
@@ -78,6 +86,14 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
 
     const hideModalHandler = () => {
         setShowModal(false)
+    }
+
+    const onAccountIdChange = (event: any) => {
+        setAccountId(event.target.value)
+    }
+
+    const omAmountChange = (event: any) => {
+        setAmount(event.target.value)
     }
 
     const disableTransfer = state.balance ? parseFloat(state.balance!) <= MIN_REMAINING : true
@@ -99,12 +115,13 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
         <Form noValidate validated={validated}>
             <Form.Group>
                 <Form.Control
-                    ref={accountId}
+                    onChange={onAccountIdChange}
                     className={inputClass}
+                    value={accountId}
                     required
                     type="text"
                     placeholder={t('idramAccount')}
-                    defaultValue={storage.getItem('accountId') ? storage.getItem('accountId') : null}
+                    // defaultValue={storage.getItem('accountId') ? storage.getItem('accountId') : null}
                 />
             </Form.Group>
             <Form.Group className={rememberFieldGroupClass}>
@@ -120,8 +137,12 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
 
             <Form.Group className={lgMarginBottomClass} controlId="formBasicPassword">
                 <Form.Control
+                    onChange={omAmountChange}
+                    value={amount}
                     className={inputClass}
-                    required type="number" placeholder={t('transferringAmount')}/>
+                    required
+                    type="number"
+                    placeholder={t('transferringAmount')}/>
             </Form.Group>
 
             <div className={centerClass}>

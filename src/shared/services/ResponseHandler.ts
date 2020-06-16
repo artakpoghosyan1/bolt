@@ -1,28 +1,36 @@
 export const responseHandler = {
-    success(response: any) {
+    success: (response: any) => {
         if (response.ok) {
-            return response.text().then((data: any) => data && JSON.parse(data))
-        } else {
-            return response.json()
-                .then((data: any) => {
+            return response.json().then((data: any) => {
+                debugger
+                if (data.error) {
                     throw {
                         status: response.status,
-                        error: data
+                        message: data.error.message,
+                    }
+                }
+                return data
+            })
+        } else {
+            return response.json().then(
+                (data: any) => {
+                    throw {
+                        status: response.status,
+                        message: data.error.message,
                     }
                 },
                 () => {
                     throw {
                         status: response.status,
-                        message: response.statusText
+                        message: response.statusText,
                     }
                 }
             )
         }
     },
-
-    failure(err: any) {
+    failure: (err: any) => {
         throw {
-            message: err.message || err.statusText
+            message: err.message || err.statusText,
         }
-    }
+    },
 }

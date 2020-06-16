@@ -9,10 +9,7 @@ import {TranslateComponent} from "./shared/TranslateComponent";
 import {StateContext} from "../index"
 import {ErrorMessageComponent} from "./shared/ErrorMessageComponent";
 import {useLogin} from "./hooks/useLogin";
-import {ApiService} from "../shared/services/ApiService";
-import {SET_BALANCE_SUCCESS, SET_TRANSFER_SUCCESS} from "../store/actions";
-import {getLocalStorage} from "../shared/utilities/localstorage";
-import {deserializeTransferHistory} from "../shared/helpers/deserializeData";
+import {RiErrorWarningLine} from "react-icons/all";
 
 const loginWrapperClass = css`
     padding-top: 50px;
@@ -32,21 +29,22 @@ const loginBtnClass = css`
     margin-top: 50px;
 `
 
-const PHONE_MIN_LENGTH = 11
-const PASS_MIN_LENGTH = 6
+const errorIconClass = css`
+    margin-right: 9px;
+`
 
-const storage = getLocalStorage()
+const PHONE_MIN_LENGTH = 6
+const PASS_MIN_LENGTH = 6
 
 export const LoginComponent: React.FunctionComponent = React.memo(() => {
     const {t} = useTranslation();
-    const {state, dispatch} = React.useContext(StateContext);
+    const {state} = React.useContext(StateContext);
     const history = useHistory()
 
     const [isValidPassword, setIsValidPassword] = React.useState(true)
     const [isValidPhoneNumber, setIsValidPhoneNumber] = React.useState(true)
     const [phoneNumber, setPhoneNumber] = React.useState('')
     const [password, setPassword] = React.useState('')
-
     const passwordInputRef: React.RefObject<HTMLInputElement> = React.useRef(null)
     const phoneInputRef: React.RefObject<HTMLInputElement> = React.useRef(null)
 
@@ -59,19 +57,6 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
 
         login(phoneNumber, password).then((user) => {
             history.push('/menu')
-            const jwt = user ? user.access_token : null
-            ApiService().fetchData('balance', 'GET', jwt).then(({balance}) => {debugger
-                dispatch({type: SET_BALANCE_SUCCESS, payload: balance})
-                storage.setItem('balance', balance)
-            }).catch((error) => {
-                console.log('error', error)
-            })
-
-            ApiService().fetchData('transactions', 'GET', jwt).then(data => {
-                const transferHistory = deserializeTransferHistory(data)
-                dispatch({type: SET_TRANSFER_SUCCESS, payload: transferHistory})
-                storage.setItem('transferHistory', transferHistory)
-            })
         })
     }
 
@@ -80,7 +65,7 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
     }, [error])
 
     const validateInputs = () => {
-        const validPhoneNumber = phoneNumber.length === PHONE_MIN_LENGTH
+        const validPhoneNumber = phoneNumber.length >= PHONE_MIN_LENGTH
         const validPassword = password.length >= PASS_MIN_LENGTH
 
         if (!validPhoneNumber) {
@@ -98,7 +83,7 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
     }
 
     const phoneNumberOnChangeHandler = (event: any) => {
-        if (event.target.value.length <= PHONE_MIN_LENGTH) {
+        if (event.target.value.length >= PHONE_MIN_LENGTH) {
             setPhoneNumber(event.target.value)
         }
     }
@@ -116,6 +101,7 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
 
             {state.authenticationError &&
             <Alert variant='danger'>
+                <RiErrorWarningLine className={errorIconClass}/>
                 {state.authenticationError}
             </Alert>
             }

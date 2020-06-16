@@ -12,8 +12,8 @@ import {HeaderComponent} from "./HeaderComponent";
 import {LoadingComponent} from "./LoadingComponent";
 import {getLocalStorage} from "../shared/utilities/localstorage";
 import {ProtectedRoute} from "./ProtectedRoute";
-import {useLogin} from "./hooks/useLogin";
 import {StateContext} from "../index";
+import {ApiService} from "../shared/services/ApiService";
 
 const containerClass = css`
     height: 100%;
@@ -27,7 +27,6 @@ const storage = getLocalStorage()
 export let loginIntervalId: any
 
 const App: React.FunctionComponent = () => {
-    const {login} = useLogin()
     const {state} = React.useContext(StateContext);
 
     React.useEffect(() => {
@@ -35,16 +34,15 @@ const App: React.FunctionComponent = () => {
             loginIntervalId = setInterval(() => {
                 const credentials = storage.getItem('credentials')
 
-                login(credentials.username, credentials.password).then(({access_token}) => {
-                    storage.setItem('user', {jwt: access_token, data: state.userData})
-                }, (error) => {
-                    console.log('auth error', error)
+                ApiService().fetchData(`user/auth`, 'POST', null, {
+                    username: credentials.username,
+                    password: credentials.password
                 })
-            }, 13000)
+            }, 13 * 60)
 
         }
         return () => clearInterval(loginIntervalId)
-    }, [state.userData])
+    }, [])
 
     return (
         <Container className={containerClass}>
