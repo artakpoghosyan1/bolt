@@ -14,6 +14,7 @@ import {getLocalStorage} from "../shared/utilities/localstorage";
 import {ProtectedRoute} from "./ProtectedRoute";
 import {StateContext} from "../index";
 import {ApiService} from "../shared/services/ApiService";
+import {AboutComponent} from "./AboutComponent";
 
 const containerClass = css`
     height: 100%;
@@ -37,6 +38,8 @@ const App: React.FunctionComponent = () => {
                 ApiService().fetchData(`user/auth`, 'POST', null, {
                     username: credentials.username,
                     password: credentials.password
+                }).then((response) => {
+                    storage.setItem('jwt', response.access_token)
                 })
             }, (13 * 60) * 1000)
         }
@@ -60,6 +63,9 @@ const App: React.FunctionComponent = () => {
                     </ProtectedRoute>
                     <ProtectedRoute exact path="/transfer-history">
                         <TransferHistoryComponent/>
+                    </ProtectedRoute>
+                    <ProtectedRoute exact path="/about">
+                        <AboutComponent/>
                     </ProtectedRoute>
                 </Switch>
             </Router>

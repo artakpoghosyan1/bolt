@@ -69,9 +69,11 @@ const Header: React.FunctionComponent<IHeaderComponent> = React.memo((props) => 
         }
         <LanguageDropdownComponent/>
 
+        {isLoggedIn() &&
         <button className={`${resetButtonDefaultStyles} ${logoutBtnClass}`} onClick={onLogoutClickHandler}>
             <TranslateComponent messageKey='logout'/> <RiLogoutCircleRLine size={27} color={mainTextColor}/>
         </button>
+        }
     </header>
 })
 

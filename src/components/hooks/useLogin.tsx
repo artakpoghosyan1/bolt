@@ -20,7 +20,7 @@ interface IUseLogin {
 }
 
 export function useLogin(): IUseLogin {
-    const {dispatch} = React.useContext(StateContext);
+    const {state, dispatch} = React.useContext(StateContext)
     const [error, setError] = React.useState<any>(null)
     const history = useHistory()
 
@@ -45,11 +45,15 @@ export function useLogin(): IUseLogin {
         return ApiService().fetchData(`user/auth`, 'POST', null, {
             username,
             password
-        }).then((response) => {debugger
+        }).then((response) => {
             const userData = deserializeUserData(response)
+            if(state.authenticationError) {
+                dispatch({type: types.SET_USER_DATA_FAILURE, payload: null})
+            }
             dispatch({type: types.SET_USER_DATA_SUCCESS, payload: userData})
             dispatch({type: types.TOGGLE_LOADING, payload: false})
-            storage.setItem('user', {jwt: response.access_token, data: userData})
+            storage.setItem('user', {userData})
+            storage.setItem('jwt', response.access_token)
             storage.setItem('credentials', {username, password})
             getUserOtherData(response.access_token)
             return response
@@ -62,12 +66,14 @@ export function useLogin(): IUseLogin {
     }
 
     const isLoggedIn = () => {
-        return !!storage.getItem('user')
+        return !!storage.getItem('jwt')
     }
 
     const logout = () => {
-        storage.clear()
-        history.push('/')
+        storage.clear().then(() => {
+            dispatch({type: types.RESET_STORE})
+            history.push('/')
+        })
     }
 
     return {error, login, isLoggedIn, logout}

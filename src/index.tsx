@@ -12,10 +12,10 @@ const userData = storage.getItem('user')
 const balance = storage.getItem('balance')
 const transferHistory = storage.getItem('transferHistory')
 
-const initialState: IState = {
+export const initialState: IState = {
     transferHistories: transferHistory ? transferHistory : [],
     authenticationError: null,
-    userData: userData ? userData.data : null,
+    userData: userData ? userData : null,
     isLoading: false,
     balance
 }

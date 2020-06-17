@@ -17,6 +17,7 @@ import {useTranslation} from "react-i18next";
 import {BsInfoCircle} from "react-icons/all";
 import {mainColor} from "../constants/colors";
 import {WarningModalComponent} from "./shared/WarningModalComponent";
+import {BalanceComponent} from "./BalanceComponent";
 
 const rememberFieldGroupClass = css`
     margin-bottom: 30px;
@@ -99,10 +100,8 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
     const disableTransfer = state.balance ? parseFloat(state.balance!) <= MIN_REMAINING : true
 
     return <div className={`${verticalCenteredLayoutClass} transfer-wrapper`}>
-        <TitleComponent>
-            <TranslateComponent messageKey='transfer'/>
-            <p><TranslateComponent messageKey='transferFromAvailable'/></p>
-        </TitleComponent>
+        <BalanceComponent/>
+
         {disableTransfer &&
         <Alert className={infoClass} variant='info'>
             <TranslateComponent messageKey='dontHaveEnoughMoney'/>

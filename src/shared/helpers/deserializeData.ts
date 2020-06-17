@@ -4,8 +4,7 @@ import moment from "moment";
 
 export function deserializeUserData (dataJson: any): IUser {
     return {
-        fullName: `${dataJson.data.first_name} ${dataJson.data.last_name}`,
-        balance: dataJson.balance
+        fullName: `${dataJson.data.first_name} ${dataJson.data.last_name}`
     }
 }
 

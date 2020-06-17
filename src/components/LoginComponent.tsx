@@ -10,6 +10,7 @@ import {StateContext} from "../index"
 import {ErrorMessageComponent} from "./shared/ErrorMessageComponent";
 import {useLogin} from "./hooks/useLogin";
 import {RiErrorWarningLine} from "react-icons/all";
+import {EyeIconComponent} from "./EyeIconComponent";
 
 const loginWrapperClass = css`
     padding-top: 50px;
@@ -33,6 +34,10 @@ const errorIconClass = css`
     margin-right: 9px;
 `
 
+const passwordClass = css`
+    position: relative;
+`
+
 const PHONE_MIN_LENGTH = 6
 const PASS_MIN_LENGTH = 6
 
@@ -45,6 +50,7 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
     const [isValidPhoneNumber, setIsValidPhoneNumber] = React.useState(true)
     const [phoneNumber, setPhoneNumber] = React.useState('')
     const [password, setPassword] = React.useState('')
+    const [showPassword, setShowPassword] = React.useState<boolean>(false)
     const passwordInputRef: React.RefObject<HTMLInputElement> = React.useRef(null)
     const phoneInputRef: React.RefObject<HTMLInputElement> = React.useRef(null)
 
@@ -92,6 +98,8 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
         setPassword(event.target.value)
     }
 
+    const togglePassword = () => setShowPassword(showPassword => !showPassword)
+
     return (
         <div className={loginWrapperClass}>
             <TitleComponent>
@@ -122,15 +130,17 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
                     }
                 </Form.Group>
 
-                <Form.Group className={lgMarginBottomClass} controlId="formBasicPassword">
+                <Form.Group className={`${lgMarginBottomClass} ${passwordClass}`} controlId="formBasicPassword">
                     <Form.Control
                         onChange={passwordOnChangeHandler}
                         ref={passwordInputRef}
                         className={`${inputClass}`}
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         value={password}
                         placeholder={t('password')}
                     />
+
+                    <EyeIconComponent onClick={togglePassword} showPassword={showPassword}/>
 
                     {!isValidPassword &&
                     <ErrorMessageComponent message={t(passwordInputRef.current!.validationMessage)}/>

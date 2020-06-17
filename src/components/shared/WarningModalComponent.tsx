@@ -12,6 +12,11 @@ interface IWarningModalComponentProps {
 
 const modalClass = css`
     color: ${mainTextDarkColor};
+    white-space: pre-wrap;
+    
+    p {
+        line-height: 30px;
+    }
 `
 
 const closeBtnClass = css`

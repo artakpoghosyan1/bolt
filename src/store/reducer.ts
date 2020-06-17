@@ -1,5 +1,6 @@
 import {IState} from "./IState";
 import * as actionTypes from "./actions";
+import {initialState} from "../index";
 
 export interface IAction {
     type: string
@@ -40,6 +41,12 @@ export const reducer = (state: IState, action: IAction) => {
             return {
                 ...state,
                 isLoading: action.payload
+            }
+        }
+
+        case actionTypes.RESET_STORE: {
+            return {
+                ...initialState
             }
         }
 

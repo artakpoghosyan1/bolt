@@ -13,7 +13,6 @@ interface ILoadingComponentProps {
 const loadingClass = css`
     align-items: center;
     bottom: 0;
-    background-color: rgba(255,255,255,0.4);
     display: flex;
     left: 0;
     right: 0;

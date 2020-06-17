@@ -2,7 +2,6 @@ export const responseHandler = {
     success: (response: any) => {
         if (response.ok) {
             return response.json().then((data: any) => {
-                debugger
                 if (data.error) {
                     throw {
                         status: response.status,

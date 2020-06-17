@@ -19,7 +19,10 @@
   "phoneNumberError": "This field must contain 10 characters",
   "passwordError": "This field must contain 6 characters",
   "logout": "Logout",
-  "transferErrorMessage": "You don't have enough money on your account (the minimal amount: 1000dr)",
+  "transferErrorMessage": "You don't have enough money on your account\n (the minimal amount: 1000dr)",
   "noTransferHistory": "You do not have any previous transfers",
-  "viewVideo": "Video tutorial"
+  "viewVideo": "Video tutorial",
+  "about": "About us",
+  "addressTitle": "Our address with map",
+  "address": "Manandyan-Nizami crossroad /3th section/"
 }
