@@ -9,7 +9,7 @@ import en from "../assets/en.png";
 import {getLocalStorage} from "../shared/utilities/localstorage";
 
 const langDropdownClass = css`
-    margin-right: 20px;
+    margin-right: 10px;
     width: auto;
     min-width: unset !important;
     

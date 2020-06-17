@@ -36,7 +36,7 @@ const userNameClass = css`
 `
 
 const backBtnClass = css`
-    margin-right: 20px;
+    margin-right: 10px;
 `
 
 const Header: React.FunctionComponent<IHeaderComponent> = React.memo((props) => {

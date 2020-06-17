@@ -22,7 +22,7 @@ const phoneNumberClass = css`
 `
 
 const phoneListClass = css`
-    margin: 25px 0;
+    margin: 20px 0;
     
     & > div {
         background: none;
@@ -34,8 +34,11 @@ const phoneListClass = css`
 const addressClass = css`
     white-space: pre-wrap;
     
-    p:last-child {
-        margin: 0;
+    p {
+        margin-bottom: 7px;
+        &:last-child {
+            margin: 0;
+        }
     }
 `
 
