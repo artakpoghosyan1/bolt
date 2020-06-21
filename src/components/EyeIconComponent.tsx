@@ -10,9 +10,8 @@ interface IEyeIconComponentProps {
 
 const eyeIconClass = css`
     position: absolute;
-    top: 50%;
+    top: 15px;
     right: 8px;
-    margin-top: -11px;
 `
 
 export const EyeIconComponent: React.FunctionComponent<IEyeIconComponentProps> = React.memo(props => {

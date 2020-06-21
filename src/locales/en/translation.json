@@ -24,5 +24,7 @@
   "viewVideo": "Video tutorial",
   "about": "About us",
   "addressTitle": "Our address with map",
-  "address": "Manandyan-Nizami crossroad /3th section/"
+  "address": "Manandyan-Nizami crossroad /3th section/",
+  "fee": "Fee",
+  "successTransfer": "Your transaction has been successful"
 }

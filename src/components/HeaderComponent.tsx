@@ -3,7 +3,7 @@ import {IoIosArrowBack, RiLogoutCircleRLine} from "react-icons/all";
 import {withRouter} from "react-router-dom";
 import {RouteComponentProps} from "react-router";
 import {resetButtonDefaultStyles} from "./styleHelper/mainStyles";
-import {mainTextColor} from "../constants/colors";
+import {mainColor, mainTextColor} from "../constants/colors";
 import {css} from "emotion";
 
 import {LanguageDropdownComponent} from "./LanguageDropdownComponent";
@@ -58,7 +58,7 @@ const Header: React.FunctionComponent<IHeaderComponent> = React.memo((props) => 
     return <header className={headerClass}>
         {canGoBack &&
         <button className={`${resetButtonDefaultStyles} ${backBtnClass}`} onClick={goBackHandler}>
-            <IoIosArrowBack size={30} color={mainTextColor}/>
+            <IoIosArrowBack size={30} color={mainColor}/>
         </button>
         }
 

@@ -52,7 +52,7 @@ export function useLogin(): IUseLogin {
             }
             dispatch({type: types.SET_USER_DATA_SUCCESS, payload: userData})
             dispatch({type: types.TOGGLE_LOADING, payload: false})
-            storage.setItem('user', {userData})
+            storage.setItem('user', userData)
             storage.setItem('jwt', response.access_token)
             storage.setItem('credentials', {username, password})
             getUserOtherData(response.access_token)

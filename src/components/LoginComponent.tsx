@@ -61,18 +61,32 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
             return
         }
 
-        login(phoneNumber, password).then((user) => {
+        login(phoneInputRef.current!.value, passwordInputRef.current!.value).then(() => {
             history.push('/menu')
         })
+    }
+
+    const handleEnterKeyPress = (event: any) => {
+        if(event.key === 'Enter') {
+            onSubmitHandler()
+        }
     }
 
     React.useEffect(() => {
         phoneInputRef.current!.setCustomValidity(error)
     }, [error])
 
+    React.useEffect(() => {
+        document.addEventListener('keypress', handleEnterKeyPress)
+
+        return () => {
+            document.removeEventListener('keypress', handleEnterKeyPress)
+        }
+    }, [])
+
     const validateInputs = () => {
-        const validPhoneNumber = phoneNumber.length >= PHONE_MIN_LENGTH
-        const validPassword = password.length >= PASS_MIN_LENGTH
+        const validPhoneNumber = phoneInputRef.current!.value.length >= PHONE_MIN_LENGTH
+        const validPassword = phoneInputRef.current!.value.length >= PASS_MIN_LENGTH
 
         if (!validPhoneNumber) {
             phoneInputRef.current!.setCustomValidity('phoneNumberError')

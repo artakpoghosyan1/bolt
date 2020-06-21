@@ -14,7 +14,7 @@ import {TitleComponent} from "./shared/TitleComponent";
 import {getLocalStorage} from "../shared/utilities/localstorage";
 import {TranslateComponent} from "./shared/TranslateComponent";
 import {useTranslation} from "react-i18next";
-import {BsInfoCircle} from "react-icons/all";
+import {BsInfoCircle, FaCheck} from "react-icons/all";
 import {mainColor} from "../constants/colors";
 import {WarningModalComponent} from "./shared/WarningModalComponent";
 import {BalanceComponent} from "./BalanceComponent";
@@ -27,6 +27,28 @@ const infoClass = css`
     margin-bottom: 40px;
     display: flex;
     justify-content: space-between;
+`
+
+const amountFormGroupClass = css`
+    display: flex;
+    justify-content: space-between;
+    white-space: nowrap;
+`
+
+const amountFieldWrapperClass = css`
+    flex-grow: 1;
+`
+
+const feeWrapperClass = css`
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 100px;
+`
+
+const feeAmountClass = css`
+    color: ${mainColor};
 `
 
 const scaleAnimation = keyframes`
@@ -47,6 +69,30 @@ const infoIconClass = css`
     animation: ${scaleAnimation} .7s infinite linear;
 `
 
+const feeClass = css`
+    font-size: 13px;
+    text-align: right;
+`
+
+const hideSuccess =  keyframes`
+    from {
+        opacity: 1;
+    }
+    
+    to {
+        opacity: 0;
+    }
+`
+
+const HIDE_SUCCESS_TIME = 6
+
+const successClass = css`
+    animation: ${hideSuccess} 2s ${HIDE_SUCCESS_TIME}s;
+    svg {
+        margin-right: 15px;
+    }
+`
+
 const storage = getLocalStorage()
 const MIN_BALANCE_AMOUNT = 1000
 
@@ -56,17 +102,18 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
     const [showModal, setShowModal] = React.useState<boolean>(false)
     const [accountId, setAccountId] = React.useState<string>('')
     const [amount, setAmount] = React.useState<string>('')
+    const [showSuccess, setShowSuccess] = React.useState<boolean>(false)
+    const [fee, setFee] = React.useState<number>(0)
     const {state} = React.useContext(StateContext);
     const {t} = useTranslation();
 
     const onSubmitHandler = () => {
         setValidated(true)
 
-        if((+state.balance! - +amount) <= MIN_BALANCE_AMOUNT) {
+        if ((+state.balance! - +amount) <= MIN_BALANCE_AMOUNT) {
             setShowModal(true)
             return
         }
-
 
 
         // storage.setItem('remember', isChecked)
@@ -93,9 +140,20 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
         setAccountId(event.target.value)
     }
 
-    const omAmountChange = (event: any) => {
-        setAmount(event.target.value)
+    const omAmountChange = ({target}: any) => {
+        const value = target.value
+        setAmount(value)
+
+        setFee(calculateFee(value))
     }
+
+    const calculateFee = (value: string) => +value * 1 / 100
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            setShowSuccess(false)
+        }, HIDE_SUCCESS_TIME * 1000)
+    }, [showSuccess])
 
     const disableTransfer = state.balance ? parseFloat(state.balance!) <= MIN_REMAINING : true
 
@@ -109,6 +167,13 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
             <button className={`${resetButtonDefaultStyles} ${infoIconClass}`} onClick={showModalHandler}>
                 <BsInfoCircle color={mainColor}/>
             </button>
+        </Alert>
+        }
+
+        {showSuccess &&
+        <Alert className={successClass} variant='success'>
+            <FaCheck color={'green'}/>
+            <TranslateComponent messageKey='successTransfer'/>
         </Alert>
         }
         <Form noValidate validated={validated}>
@@ -134,14 +199,24 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
                 />
             </Form.Group>
 
-            <Form.Group className={lgMarginBottomClass} controlId="formBasicPassword">
-                <Form.Control
-                    onChange={omAmountChange}
-                    value={amount}
-                    className={inputClass}
-                    required
-                    type="number"
-                    placeholder={t('transferringAmount')}/>
+            <Form.Group className={`${lgMarginBottomClass} ${amountFormGroupClass}`} controlId="formBasicPassword">
+                <div className={amountFieldWrapperClass}>
+                    <Form.Control
+                        onChange={omAmountChange}
+                        value={amount}
+                        className={inputClass}
+                        required
+                        type="number"
+                        placeholder={t('transferringAmount')}/>
+                </div>
+                <div className={feeWrapperClass}>
+                    <div className={feeClass}>
+                        <TranslateComponent messageKey='fee'/> 1%
+                        <div className={feeAmountClass}>
+                            {fee} <TranslateComponent messageKey='currency'/>
+                        </div>
+                    </div>
+                </div>
             </Form.Group>
 
             <div className={centerClass}>
