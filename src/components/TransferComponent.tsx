@@ -71,7 +71,6 @@ const infoIconClass = css`
 
 const feeClass = css`
     font-size: 13px;
-    text-align: right;
 `
 
 const hideSuccess =  keyframes`
