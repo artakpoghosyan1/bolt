@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "c89de3f4f5cd78d5cf4d86bd7d0a0c47",
+    "revision": "d9b48e5a80aeafd6819b92f5ce116984",
     "url": "/bolt/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/bolt/static/css/2.af3c1da9.chunk.css"
   },
   {
-    "revision": "e45f4786e3e55d917732",
+    "revision": "1e2d897b4f0d12f26a2c",
     "url": "/bolt/static/css/main.428184c4.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/bolt/static/js/2.80461448.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "e45f4786e3e55d917732",
-    "url": "/bolt/static/js/main.6a8458ee.chunk.js"
+    "revision": "1e2d897b4f0d12f26a2c",
+    "url": "/bolt/static/js/main.5616bd39.chunk.js"
   },
   {
     "revision": "2cb48fe687bc200fbf7d",
