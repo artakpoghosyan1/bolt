@@ -11,7 +11,7 @@
   "transferFromAvailable": "փոխանցում հասանելի գումարից",
   "transferHistory": "Փոխանցումների պատմություն",
   "currency": "դր",
-  "dontHaveEnoughMoney": "Դուք չունեք բավարար գեւմար Ձեր հաշվին",
+  "dontHaveEnoughMoney": "Դուք չունեք բավարար գումար Ձեր հաշվին",
   "idramAccount": "Իդրամի հաշվեհամար",
   "remember": "Հիշել",
   "transferringAmount": "Փոխանցվող գումարը",
@@ -26,5 +26,7 @@
   "addressTitle": "Մեր հասցեներն է՝ իր քարտեզով՝",
   "address": "Մանանդյան-Նիզամի խաչմերուկ /3-րդ մաս/",
   "fee": "Միջ. վճար",
-  "successTransfer": "Ձեր գործարքն հաջողությամբ կատարված է"
+  "successTransfer": "Ձեր գործարքն հաջողությամբ կատարված է",
+  "serverFailure": "Խնդրում ենք փորձել մի փոքր ուշ",
+  "balanceNotFound": "Ձեր Idram - ի հաշվեհահամարը չի գտնվել"
 }

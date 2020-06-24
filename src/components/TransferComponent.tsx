@@ -10,14 +10,15 @@ import {
     mainBtnClass, resetButtonDefaultStyles,
     verticalCenteredLayoutClass
 } from "./styleHelper/mainStyles";
-import {TitleComponent} from "./shared/TitleComponent";
 import {getLocalStorage} from "../shared/utilities/localstorage";
 import {TranslateComponent} from "./shared/TranslateComponent";
 import {useTranslation} from "react-i18next";
-import {BsInfoCircle, FaCheck} from "react-icons/all";
+import {BsInfoCircle, FaCheck, MdErrorOutline} from "react-icons/all";
 import {mainColor} from "../constants/colors";
 import {WarningModalComponent} from "./shared/WarningModalComponent";
 import {BalanceComponent} from "./BalanceComponent";
+import {ApiService} from "../shared/services/ApiService";
+import {SET_BALANCE_SUCCESS} from "../store/actions";
 
 const rememberFieldGroupClass = css`
     margin-bottom: 30px;
@@ -35,21 +36,21 @@ const amountFormGroupClass = css`
     white-space: nowrap;
 `
 
-const amountFieldWrapperClass = css`
-    flex-grow: 1;
-`
-
-const feeWrapperClass = css`
-    padding-left: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-width: 100px;
-`
-
-const feeAmountClass = css`
-    color: ${mainColor};
-`
+// const amountFieldWrapperClass = css`
+//     flex-grow: 1;
+// `
+//
+// const feeWrapperClass = css`
+//     padding-left: 10px;
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     min-width: 100px;
+// `
+//
+// const feeAmountClass = css`
+//     color: ${mainColor};
+// `
 
 const scaleAnimation = keyframes`
     0% {
@@ -69,9 +70,9 @@ const infoIconClass = css`
     animation: ${scaleAnimation} .7s infinite linear;
 `
 
-const feeClass = css`
-    font-size: 13px;
-`
+// const feeClass = css`
+//     font-size: 13px;
+// `
 
 const hideSuccess =  keyframes`
     from {
@@ -96,14 +97,16 @@ const storage = getLocalStorage()
 const MIN_BALANCE_AMOUNT = 1000
 
 export const TransferComponent: React.FunctionComponent = React.memo(props => {
+    const accountIdFromStorage = storage.getItem('accountId') || ''
     const [validated, setValidated] = React.useState(false)
     const [isChecked, setIsChecked] = React.useState(!!storage.getItem('remember'))
     const [showModal, setShowModal] = React.useState<boolean>(false)
-    const [accountId, setAccountId] = React.useState<string>('')
+    const [accountId, setAccountId] = React.useState<string>(accountIdFromStorage)
     const [amount, setAmount] = React.useState<string>('')
-    const [showSuccess, setShowSuccess] = React.useState<boolean>(false)
-    const [fee, setFee] = React.useState<number>(0)
-    const {state} = React.useContext(StateContext);
+    const [transferSuccess, setTransferSuccess] = React.useState<boolean>(false)
+    const [transferFailure, setTransferFailure] = React.useState<string>('')
+    // const [fee, setFee] = React.useState<number>(0)
+    const {state, dispatch} = React.useContext(StateContext);
     const {t} = useTranslation();
 
     const onSubmitHandler = () => {
@@ -114,13 +117,33 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
             return
         }
 
+        rememberAccountId()
 
-        // storage.setItem('remember', isChecked)
-        // if (isChecked) {
-        //     // storage.setItem('accountId', accountId.current!.value)
-        // } else {
-        //     storage.removeItem('accountId')
-        // }
+        const jwt = storage.getItem('jwt')
+        const data = {amount, idramId: accountId}
+
+        ApiService().fetchData('balance', 'POST', jwt, data).then(({balance}) => {
+            dispatch({type: SET_BALANCE_SUCCESS, payload: balance})
+            if(transferFailure) {
+                setTransferFailure('')
+            }
+        }).catch((error) => {
+            console.log('transfer error', error)
+            if(error.status === 400) {
+                setTransferFailure('dontHaveEnoughMoney')
+            } else if (error.status === 500) {
+                setTransferFailure('serverFailure')
+            }
+        })
+    }
+
+    const rememberAccountId = () => {
+        storage.setItem('remember', isChecked)
+        if (isChecked) {
+            storage.setItem('accountId', accountId)
+        } else {
+            storage.removeItem('accountId')
+        }
     }
 
     const checkOnchangeHandler = (event: any) => {
@@ -143,16 +166,16 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
         const value = target.value
         setAmount(value)
 
-        setFee(calculateFee(value))
+        // setFee(calculateFee(value))
     }
 
-    const calculateFee = (value: string) => +value * 1 / 100
+    // const calculateFee = (value: string) => +value * 1 / 100
 
     React.useEffect(() => {
         setTimeout(() => {
-            setShowSuccess(false)
+            setTransferSuccess(false)
         }, HIDE_SUCCESS_TIME * 1000)
-    }, [showSuccess])
+    }, [transferSuccess])
 
     const disableTransfer = state.balance ? parseFloat(state.balance!) <= MIN_REMAINING : true
 
@@ -169,10 +192,17 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
         </Alert>
         }
 
-        {showSuccess &&
+        {transferSuccess &&
         <Alert className={successClass} variant='success'>
             <FaCheck color={'green'}/>
             <TranslateComponent messageKey='successTransfer'/>
+        </Alert>
+        }
+
+        {transferFailure &&
+        <Alert className={successClass} variant='danger'>
+            <MdErrorOutline color={'red'}/>
+            <TranslateComponent messageKey={transferFailure}/>
         </Alert>
         }
         <Form noValidate validated={validated}>
@@ -180,6 +210,7 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
                 <Form.Control
                     onChange={onAccountIdChange}
                     className={inputClass}
+                    disabled={true}
                     value={accountId}
                     required
                     type="text"
@@ -191,6 +222,7 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
                 <Form.Check
                     onChange={checkOnchangeHandler}
                     custom
+                    disabled={true}
                     label={t('remember')}
                     type='checkbox'
                     id='remember-checkbox'
@@ -199,7 +231,15 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
             </Form.Group>
 
             <Form.Group className={`${lgMarginBottomClass} ${amountFormGroupClass}`} controlId="formBasicPassword">
-                <div className={amountFieldWrapperClass}>
+                <Form.Control
+                    onChange={omAmountChange}
+                    value={amount}
+                    disabled={true}
+                    className={inputClass}
+                    required
+                    type="number"
+                    placeholder={t('transferringAmount')}/>
+                {/*<div className={amountFieldWrapperClass}>
                     <Form.Control
                         onChange={omAmountChange}
                         value={amount}
@@ -215,11 +255,11 @@ export const TransferComponent: React.FunctionComponent = React.memo(props => {
                             {fee} <TranslateComponent messageKey='currency'/>
                         </div>
                     </div>
-                </div>
+                </div>*/}
             </Form.Group>
 
             <div className={centerClass}>
-                <Button className={mainBtnClass} type="button" onClick={onSubmitHandler} disabled={disableTransfer}>
+                <Button className={mainBtnClass} type="button" onClick={onSubmitHandler} disabled={true}>
                     <TranslateComponent messageKey='transfer'/>
                 </Button>
             </div>

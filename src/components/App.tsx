@@ -48,7 +48,7 @@ const App: React.FunctionComponent = () => {
 
     return (
         <Container className={containerClass}>
-            <Router basename={'bolt'}>
+            <Router basename={''}>
                 <HeaderComponent/>
 
                 <Switch>

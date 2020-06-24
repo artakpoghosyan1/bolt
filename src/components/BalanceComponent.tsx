@@ -5,19 +5,23 @@ import {RefreshBalanceButtonComponent} from "./RefreshBalanceButtonComponent";
 import {LoadingComponent} from "./LoadingComponent";
 import {TitleComponent} from "./shared/TitleComponent";
 import {StateContext} from "../index";
-import {ApiService} from "../shared/services/ApiService";
-import {SET_BALANCE_SUCCESS} from "../store/actions";
 import {css} from "emotion";
 import {getLocalStorage} from "../shared/utilities/localstorage";
+import {useGetBalance} from "./hooks/useGetBalance";
+import {ErrorAlertComponent} from "./shared/ErrorAlertComponent";
 
-const currencyClass = css`
-    text-transform: lowercase;
-    font-size: 18px;
+const balanceClass = css`
     position: relative;
+    min-width: 33px;
+    min-height: 33px;
 `
 
-const balanceLoaderClass = css`
-    position: static;
+const currencyClass = css`
+    position: relative;
+    text-transform: lowercase;
+    font-size: 18px;
+    display: inline-block;
+    vertical-align: middle;
 `
 
 const remainingClass = css`
@@ -28,37 +32,45 @@ const remainingClass = css`
 const storage = getLocalStorage()
 
 export const BalanceComponent: React.FunctionComponent = React.memo(() => {
-    const [isRefreshingBalance, setIsRefreshingBalance] = React.useState(false)
-    const {state, dispatch} = React.useContext(StateContext);
+    const {state} = React.useContext(StateContext);
+    const getBalance = useGetBalance()
 
     const refreshClickHandler = React.useCallback(() => {
-        setIsRefreshingBalance(true)
         const jwt = storage.getItem('jwt')
 
-        ApiService().fetchData('balance', 'GET', jwt ? jwt : null).then(({balance}) => {
-            dispatch({type: SET_BALANCE_SUCCESS, payload: balance})
-            storage.setItem('balance', balance)
-            setIsRefreshingBalance(false)
-        }, () => setIsRefreshingBalance(false))
+        getBalance(jwt)
     }, [])
 
-    return <TitleComponent secondary>
-        {state.balance ?
-            <>
-                {formatter(state.balance!)}
-
-                <span className={currencyClass}>
-                        <TranslateComponent messageKey='currency'/>
-
-                        <RefreshBalanceButtonComponent isRefreshingBalance={isRefreshingBalance} onClick={refreshClickHandler}/>
-                    </span>
-            </> :
-
-            <LoadingComponent className={balanceLoaderClass} isLoading={true} size='32px'/>
+    return <>
+        {state.balanceError &&
+            <ErrorAlertComponent>
+                <TranslateComponent messageKey='balanceNotFound'/>
+            </ErrorAlertComponent>
         }
 
-        <p className={remainingClass}>
-            <TranslateComponent messageKey='remaining'/>
-        </p>
-    </TitleComponent>
+        <TitleComponent secondary>
+            <div className={balanceClass}>
+                {!state.isBalanceLoading && !state.balanceError &&
+                <>
+                    {formatter(state.balance!)}
+
+                    <span className={currencyClass}>
+                        <TranslateComponent messageKey='currency'/>
+                    </span>
+                </>
+                }
+
+                {state.balanceError && !state.isBalanceLoading && '-'}
+                <RefreshBalanceButtonComponent
+                    isRefreshingBalance={state.isBalanceLoading}
+                    onClick={refreshClickHandler}/>
+                <LoadingComponent isLoading={state.isBalanceLoading} size='32px'/>
+            </div>
+
+
+            <p className={remainingClass}>
+                <TranslateComponent messageKey='remaining'/>
+            </p>
+        </TitleComponent>
+    </>
 })

@@ -1,6 +1,8 @@
 import {IState} from "./IState";
 import * as actionTypes from "./actions";
 import {initialState} from "../index";
+import {IUser} from "../shared/models/IUser";
+import {ITransferHistory} from "../shared/models/ITransferHistory";
 
 export interface IAction {
     type: string
@@ -30,6 +32,20 @@ export const reducer = (state: IState, action: IAction) => {
             }
         }
 
+        case actionTypes.SET_BALANCE_FAILURE: {
+            return {
+                ...state,
+                balanceError: action.payload
+            }
+        }
+
+        case actionTypes.TOGGLE_IS_BALANCE_LOADING: {
+            return {
+                ...state,
+                isBalanceLoading: action.payload
+            }
+        }
+
         case actionTypes.SET_TRANSFER_SUCCESS: {
             return {
                 ...state,
@@ -46,7 +62,13 @@ export const reducer = (state: IState, action: IAction) => {
 
         case actionTypes.RESET_STORE: {
             return {
-                ...initialState
+                authenticationError: null,
+                userData: null,
+                balance: null,
+                transferHistories: [],
+                isLoading: false,
+                isBalanceLoading: false,
+                balanceError: null
             }
         }
 

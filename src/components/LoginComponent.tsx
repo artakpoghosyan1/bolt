@@ -11,6 +11,7 @@ import {ErrorMessageComponent} from "./shared/ErrorMessageComponent";
 import {useLogin} from "./hooks/useLogin";
 import {RiErrorWarningLine} from "react-icons/all";
 import {EyeIconComponent} from "./EyeIconComponent";
+import {ErrorAlertComponent} from "./shared/ErrorAlertComponent";
 
 const loginWrapperClass = css`
     padding-top: 50px;
@@ -28,10 +29,6 @@ const loginFormClass = css`
 
 const loginBtnClass = css`
     margin-top: 50px;
-`
-
-const errorIconClass = css`
-    margin-right: 9px;
 `
 
 const passwordClass = css`
@@ -122,10 +119,9 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
             </TitleComponent>
 
             {state.authenticationError &&
-            <Alert variant='danger'>
-                <RiErrorWarningLine className={errorIconClass}/>
+            <ErrorAlertComponent>
                 {state.authenticationError}
-            </Alert>
+            </ErrorAlertComponent>
             }
 
             <Form className={`${loginFormClass} ${!isValidPassword && !isValidPhoneNumber ? 'was-validated' : ''}`}>

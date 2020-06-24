@@ -7,8 +7,8 @@ import * as types from "../../store/actions";
 import {StateContext} from "../../index"
 import {getLocalStorage} from "../../shared/utilities/localstorage";
 import {IUser} from "../../shared/models/IUser";
-import {SET_BALANCE_SUCCESS} from "../../store/actions";
 import {SET_TRANSFER_SUCCESS} from "../../store/actions";
+import {useGetBalance} from "./useGetBalance";
 
 const storage = getLocalStorage()
 
@@ -23,15 +23,9 @@ export function useLogin(): IUseLogin {
     const {state, dispatch} = React.useContext(StateContext)
     const [error, setError] = React.useState<any>(null)
     const history = useHistory()
+    const getBalance = useGetBalance()
 
-    const getUserOtherData = (jwt: string) => {
-        ApiService().fetchData('balance', 'GET', jwt).then(({balance}) => {
-            dispatch({type: SET_BALANCE_SUCCESS, payload: balance})
-            storage.setItem('balance', balance)
-        }).catch((error) => {
-            console.log('error', error)
-        })
-
+    const getTransactions = (jwt: string) => {
         ApiService().fetchData('transactions', 'GET', jwt).then(data => {
             const transferHistory = deserializeTransferHistory(data)
             dispatch({type: SET_TRANSFER_SUCCESS, payload: transferHistory})
@@ -55,7 +49,8 @@ export function useLogin(): IUseLogin {
             storage.setItem('user', userData)
             storage.setItem('jwt', response.access_token)
             storage.setItem('credentials', {username, password})
-            getUserOtherData(response.access_token)
+            getTransactions(response.access_token)
+            getBalance(response.access_token)
             return response
         }, (error) => {
             dispatch({type: types.SET_USER_DATA_FAILURE, payload: error.message})

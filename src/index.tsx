@@ -17,6 +17,8 @@ export const initialState: IState = {
     authenticationError: null,
     userData: userData ? userData : null,
     isLoading: false,
+    balanceError: null,
+    isBalanceLoading: false,
     balance
 }
 
