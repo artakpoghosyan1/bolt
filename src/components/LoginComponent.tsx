@@ -59,7 +59,7 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
         }
 
         login(phoneInputRef.current!.value, passwordInputRef.current!.value).then(() => {
-            history.push('/menu')
+            history.push('/')
         })
     }
 

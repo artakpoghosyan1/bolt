@@ -10,10 +10,10 @@ interface IRefreshBalanceButtonComponentProps extends React.HtmlHTMLAttributes<H
 
 const refreshBalanceClass = css`
     position: absolute;
-    right: 0;
+    left: 0;
     top: 50%;
     font-size: 24px;
-    margin-top: -15px;
+    margin-top: -12px;
 `
 
 export const RefreshBalanceButtonComponent: React.FunctionComponent<IRefreshBalanceButtonComponentProps> = React.memo(props => {

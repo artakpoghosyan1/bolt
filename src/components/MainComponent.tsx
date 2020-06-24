@@ -5,7 +5,7 @@ import {Button} from "react-bootstrap";
 import {secondaryBtnClass} from "./styleHelper/mainStyles";
 import {FaDollarSign, FaHistory} from 'react-icons/fa';
 import {TranslateComponent} from "./shared/TranslateComponent";
-import {MdSlowMotionVideo, MdWork} from "react-icons/all";
+import {GiNewspaper, MdSlowMotionVideo, MdWork} from "react-icons/all";
 import {VideoTutorialComponent} from "./VideoTutorialComponent";
 import {BalanceComponent} from "./BalanceComponent";
 
@@ -19,7 +19,7 @@ const menuItemIconsClass = css`
     margin-right: 4%;
 `
 
-export const MenuComponent: React.FunctionComponent = React.memo(props => {
+export const MainComponent: React.FunctionComponent = React.memo(props => {
     const [openVideo, setOpenVideo] = React.useState(false)
     const history = useHistory()
 
@@ -56,6 +56,11 @@ export const MenuComponent: React.FunctionComponent = React.memo(props => {
         <Button className={`${menuItemClass} ${secondaryBtnClass}`} onClick={() => redirectToPage('about')}>
             <MdWork className={menuItemIconsClass}/>
             <TranslateComponent messageKey='about'/>
+        </Button>
+
+        <Button className={`${menuItemClass} ${secondaryBtnClass}`} onClick={() => redirectToPage('news')}>
+            <GiNewspaper className={menuItemIconsClass}/>
+            <TranslateComponent messageKey='news'/>
         </Button>
         <VideoTutorialComponent show={openVideo} onHide={closeVideoHandler}/>
     </React.Fragment>

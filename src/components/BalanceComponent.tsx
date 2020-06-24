@@ -50,6 +50,10 @@ export const BalanceComponent: React.FunctionComponent = React.memo(() => {
 
         <TitleComponent secondary>
             <div className={balanceClass}>
+                <RefreshBalanceButtonComponent
+                    isRefreshingBalance={state.isBalanceLoading}
+                    onClick={refreshClickHandler}/>
+
                 {!state.isBalanceLoading && !state.balanceError &&
                 <>
                     {formatter(state.balance!)}
@@ -61,9 +65,6 @@ export const BalanceComponent: React.FunctionComponent = React.memo(() => {
                 }
 
                 {state.balanceError && !state.isBalanceLoading && '-'}
-                <RefreshBalanceButtonComponent
-                    isRefreshingBalance={state.isBalanceLoading}
-                    onClick={refreshClickHandler}/>
                 <LoadingComponent isLoading={state.isBalanceLoading} size='32px'/>
             </div>
 

@@ -28,5 +28,6 @@
   "fee": "Комиссия",
   "successTransfer": "Ваша транзакция прошла успешно",
   "serverFailure": "Пожалуйста, попробуйте позже",
-  "balanceNotFound": "Ваш Idram аккаунт не найден"
+  "balanceNotFound": "Ваш Idram аккаунт не найден",
+  "news": "Новости"
 }

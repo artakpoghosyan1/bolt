@@ -3,8 +3,8 @@ import {css} from 'emotion'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {LoginComponent} from "./LoginComponent";
 import {Container} from "react-bootstrap";
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
-import {MenuComponent} from "./MenuComponent";
+import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
+import {MainComponent} from "./MainComponent";
 import '../fonts/fonts.css'
 import {TransferComponent} from "./TransferComponent";
 import {TransferHistoryComponent} from "./TransferHistoryComponent";
@@ -15,6 +15,7 @@ import {ProtectedRoute} from "./ProtectedRoute";
 import {StateContext} from "../index";
 import {ApiService} from "../shared/services/ApiService";
 import {AboutComponent} from "./AboutComponent";
+import {NewsComponent} from "./NewsComponent";
 
 const containerClass = css`
     height: 100%;
@@ -52,11 +53,11 @@ const App: React.FunctionComponent = () => {
                 <HeaderComponent/>
 
                 <Switch>
-                    <Route exact strict path="/">
+                    <Route exact strict path="/login">
                         <LoginComponent/>
                     </Route>
-                    <ProtectedRoute exact path="/menu">
-                        <MenuComponent/>
+                    <ProtectedRoute exact path="/">
+                        <MainComponent/>
                     </ProtectedRoute>
                     <ProtectedRoute exact path="/transfer">
                         <TransferComponent/>
@@ -67,6 +68,12 @@ const App: React.FunctionComponent = () => {
                     <ProtectedRoute exact path="/about">
                         <AboutComponent/>
                     </ProtectedRoute>
+                    <ProtectedRoute exact path="/news">
+                        <NewsComponent/>
+                    </ProtectedRoute>
+                    <Route path="*">
+                        <Redirect to='/'/>
+                    </Route>
                 </Switch>
             </Router>
 

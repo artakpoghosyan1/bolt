@@ -41,7 +41,7 @@ const backBtnClass = css`
 
 const Header: React.FunctionComponent<IHeaderComponent> = React.memo((props) => {
     const {state} = React.useContext(StateContext);
-    const canGoBack = props.location.pathname !== '/' && props.location.pathname !== '/menu'
+    const canGoBack = props.location.pathname !== '/login' && props.location.pathname !== '/'
     const {logout, isLoggedIn} = useLogin()
 
     const goBackHandler = () => {

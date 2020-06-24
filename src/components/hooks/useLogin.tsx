@@ -67,7 +67,7 @@ export function useLogin(): IUseLogin {
     const logout = () => {
         storage.clear().then(() => {
             dispatch({type: types.RESET_STORE})
-            history.push('/')
+            history.push('/login')
         })
     }
 

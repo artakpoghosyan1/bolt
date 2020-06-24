@@ -28,5 +28,6 @@
   "fee": "Fee",
   "successTransfer": "Your transaction has been successful",
   "serverFailure": "Please try again later",
-  "balanceNotFound": "Your Idram account ID is not found"
+  "balanceNotFound": "Your Idram account ID is not found",
+  "news": "News"
 }
