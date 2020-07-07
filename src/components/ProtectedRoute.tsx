@@ -3,7 +3,7 @@ import {Redirect, Route} from "react-router-dom";
 import {useLogin} from "./hooks/useLogin";
 
 interface IProtectedRouteProps {
-    exact: boolean
+    exact?: boolean
     path: string
 }
 

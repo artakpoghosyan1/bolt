@@ -15,10 +15,12 @@ export const useGetBalance = () => {
         ApiService().fetchData('balance', 'GET', jwt).then(({balance}) => {
             dispatch({type: SET_BALANCE_SUCCESS, payload: balance})
             dispatch({type: TOGGLE_IS_BALANCE_LOADING, payload: false})
+            dispatch({type: SET_BALANCE_FAILURE, payload: null})
             storage.setItem('balance', balance)
         }).catch(({message}) => {
             dispatch({type: SET_BALANCE_FAILURE, payload: message})
             dispatch({type: TOGGLE_IS_BALANCE_LOADING, payload: false})
+            dispatch({type: SET_BALANCE_SUCCESS, payload: null})
             console.log('error', message)
         })
     }

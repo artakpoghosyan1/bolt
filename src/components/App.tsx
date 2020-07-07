@@ -3,7 +3,7 @@ import {css} from 'emotion'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {LoginComponent} from "./LoginComponent";
 import {Container} from "react-bootstrap";
-import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
+import {HashRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 import {MainComponent} from "./MainComponent";
 import '../fonts/fonts.css'
 import {TransferComponent} from "./TransferComponent";
@@ -49,7 +49,7 @@ const App: React.FunctionComponent = () => {
 
     return (
         <Container className={containerClass}>
-            <Router basename={''}>
+            <Router basename={'/'}>
                 <HeaderComponent/>
 
                 <Switch>
@@ -59,16 +59,16 @@ const App: React.FunctionComponent = () => {
                     <ProtectedRoute exact path="/">
                         <MainComponent/>
                     </ProtectedRoute>
-                    <ProtectedRoute exact path="/transfer">
+                    <ProtectedRoute path="/transfer">
                         <TransferComponent/>
                     </ProtectedRoute>
-                    <ProtectedRoute exact path="/transfer-history">
+                    <ProtectedRoute path="/transfer-history">
                         <TransferHistoryComponent/>
                     </ProtectedRoute>
-                    <ProtectedRoute exact path="/about">
+                    <ProtectedRoute path="/about">
                         <AboutComponent/>
                     </ProtectedRoute>
-                    <ProtectedRoute exact path="/news">
+                    <ProtectedRoute path="/news">
                         <NewsComponent/>
                     </ProtectedRoute>
                     <Route path="*">

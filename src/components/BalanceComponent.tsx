@@ -29,6 +29,10 @@ const remainingClass = css`
     display: block;
 `
 
+const textRedColorClass = css`
+    color: red;
+`
+
 const storage = getLocalStorage()
 
 export const BalanceComponent: React.FunctionComponent = React.memo(() => {
@@ -49,7 +53,7 @@ export const BalanceComponent: React.FunctionComponent = React.memo(() => {
         }
 
         <TitleComponent secondary>
-            <div className={balanceClass}>
+            <div className={`${balanceClass} ${state.balance && +state.balance < 0 ? textRedColorClass : ''}`}>
                 <RefreshBalanceButtonComponent
                     isRefreshingBalance={state.isBalanceLoading}
                     onClick={refreshClickHandler}/>
