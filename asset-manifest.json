@@ -1,28 +1,28 @@
 {
   "files": {
-    "main.css": "/static/css/main.8694430d.chunk.css",
-    "main.js": "/static/js/main.0428c6de.chunk.js",
-    "main.js.map": "/static/js/main.0428c6de.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.88d592a7.js",
-    "runtime-main.js.map": "/static/js/runtime-main.88d592a7.js.map",
-    "static/css/2.af3c1da9.chunk.css": "/static/css/2.af3c1da9.chunk.css",
-    "static/js/2.95290380.chunk.js": "/static/js/2.95290380.chunk.js",
-    "static/js/2.95290380.chunk.js.map": "/static/js/2.95290380.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.434b5a427c1e30540e57d70807d2d0a3.js": "/precache-manifest.434b5a427c1e30540e57d70807d2d0a3.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/2.af3c1da9.chunk.css.map": "/static/css/2.af3c1da9.chunk.css.map",
-    "static/css/main.8694430d.chunk.css.map": "/static/css/main.8694430d.chunk.css.map",
-    "static/js/2.95290380.chunk.js.LICENSE.txt": "/static/js/2.95290380.chunk.js.LICENSE.txt",
-    "static/media/fonts.css": "/static/media/Mardoto-Bold.d41d8cd9.woff2",
-    "static/media/getFetch.cjs": "/static/media/getFetch.5e98861f.cjs",
-    "static/media/news.jpg": "/static/media/news.2a464936.jpg"
+    "main.css": "/bolt/static/css/main.428184c4.chunk.css",
+    "main.js": "/bolt/static/js/main.8c747ae6.chunk.js",
+    "main.js.map": "/bolt/static/js/main.8c747ae6.chunk.js.map",
+    "runtime-main.js": "/bolt/static/js/runtime-main.60d2c75f.js",
+    "runtime-main.js.map": "/bolt/static/js/runtime-main.60d2c75f.js.map",
+    "static/css/2.af3c1da9.chunk.css": "/bolt/static/css/2.af3c1da9.chunk.css",
+    "static/js/2.95290380.chunk.js": "/bolt/static/js/2.95290380.chunk.js",
+    "static/js/2.95290380.chunk.js.map": "/bolt/static/js/2.95290380.chunk.js.map",
+    "index.html": "/bolt/index.html",
+    "precache-manifest.88db77d2e93b472559ceb6a93d2ee618.js": "/bolt/precache-manifest.88db77d2e93b472559ceb6a93d2ee618.js",
+    "service-worker.js": "/bolt/service-worker.js",
+    "static/css/2.af3c1da9.chunk.css.map": "/bolt/static/css/2.af3c1da9.chunk.css.map",
+    "static/css/main.428184c4.chunk.css.map": "/bolt/static/css/main.428184c4.chunk.css.map",
+    "static/js/2.95290380.chunk.js.LICENSE.txt": "/bolt/static/js/2.95290380.chunk.js.LICENSE.txt",
+    "static/media/fonts.css": "/bolt/static/media/Mardoto-Bold.d41d8cd9.woff2",
+    "static/media/getFetch.cjs": "/bolt/static/media/getFetch.5e98861f.cjs",
+    "static/media/news.jpg": "/bolt/static/media/news.2a464936.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.88d592a7.js",
+    "static/js/runtime-main.60d2c75f.js",
     "static/css/2.af3c1da9.chunk.css",
     "static/js/2.95290380.chunk.js",
-    "static/css/main.8694430d.chunk.css",
-    "static/js/main.0428c6de.chunk.js"
+    "static/css/main.428184c4.chunk.css",
+    "static/js/main.8c747ae6.chunk.js"
   ]
 }
