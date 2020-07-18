@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useHistory} from "react-router-dom";
-import {Alert, Button, Form} from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
 import {css} from "emotion";
 import {inputClass, lgMarginBottomClass, mainBtnClass} from "./styleHelper/mainStyles";
 import {TitleComponent} from "./shared/TitleComponent";
@@ -9,9 +9,9 @@ import {TranslateComponent} from "./shared/TranslateComponent";
 import {StateContext} from "../index"
 import {ErrorMessageComponent} from "./shared/ErrorMessageComponent";
 import {useLogin} from "./hooks/useLogin";
-import {RiErrorWarningLine} from "react-icons/all";
 import {EyeIconComponent} from "./EyeIconComponent";
 import {ErrorAlertComponent} from "./shared/ErrorAlertComponent";
+import {getLocalStorage} from "../shared/utilities/localstorage";
 
 const loginWrapperClass = css`
     padding-top: 50px;
@@ -21,10 +21,6 @@ const forgotPassClass = css`
     display: block;
     margin-top: 17px;
     text-align: right;
-`
-
-const loginFormClass = css`
-    text-align: center;
 `
 
 const loginBtnClass = css`
@@ -38,18 +34,23 @@ const passwordClass = css`
 const PHONE_MIN_LENGTH = 6
 const PASS_MIN_LENGTH = 6
 
+const storage = getLocalStorage()
+
 export const LoginComponent: React.FunctionComponent = React.memo(() => {
     const {t} = useTranslation();
     const {state} = React.useContext(StateContext);
     const history = useHistory()
 
+    const rememberedLogin = storage.getItem('rememberLogin')
+
     const [isValidPassword, setIsValidPassword] = React.useState(true)
     const [isValidPhoneNumber, setIsValidPhoneNumber] = React.useState(true)
-    const [phoneNumber, setPhoneNumber] = React.useState('')
-    const [password, setPassword] = React.useState('')
+    const [phoneNumber, setPhoneNumber] = React.useState(rememberedLogin ? rememberedLogin.userName : '')
+    const [password, setPassword] = React.useState(rememberedLogin ? rememberedLogin.password : '')
     const [showPassword, setShowPassword] = React.useState<boolean>(false)
     const passwordInputRef: React.RefObject<HTMLInputElement> = React.useRef(null)
     const phoneInputRef: React.RefObject<HTMLInputElement> = React.useRef(null)
+    const [isChecked, setIsChecked] = React.useState(!!rememberedLogin)
 
     const {error, login} = useLogin()
 
@@ -60,6 +61,15 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
 
         login(phoneInputRef.current!.value, passwordInputRef.current!.value).then(() => {
             history.push('/')
+
+            if(isChecked) {
+                storage.setItem('rememberLogin', {
+                    userName: phoneNumber,
+                    password: password
+                })
+            } else {
+                storage.removeItem('rememberLogin')
+            }
         })
     }
 
@@ -109,6 +119,10 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
         setPassword(event.target.value)
     }
 
+    const checkOnchangeHandler = ({target}: any) => {
+        setIsChecked(target.checked)
+    }
+
     const togglePassword = () => setShowPassword(showPassword => !showPassword)
 
     return (
@@ -124,7 +138,7 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
             </ErrorAlertComponent>
             }
 
-            <Form className={`${loginFormClass} ${!isValidPassword && !isValidPhoneNumber ? 'was-validated' : ''}`}>
+            <Form className={`${!isValidPassword && !isValidPhoneNumber ? 'was-validated' : ''}`}>
                 <Form.Group controlId="validationCustom01">
                     <Form.Control
                         onChange={phoneNumberOnChangeHandler}
@@ -140,7 +154,7 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
                     }
                 </Form.Group>
 
-                <Form.Group className={`${lgMarginBottomClass} ${passwordClass}`} controlId="formBasicPassword">
+                <Form.Group className={passwordClass} controlId="formBasicPassword">
                     <Form.Control
                         onChange={passwordOnChangeHandler}
                         ref={passwordInputRef}
@@ -157,13 +171,26 @@ export const LoginComponent: React.FunctionComponent = React.memo(() => {
                     }
                 </Form.Group>
 
+                <Form.Group className={lgMarginBottomClass}>
+                    <Form.Check
+                        onChange={checkOnchangeHandler}
+                        custom
+                        label={t('remember')}
+                        type='checkbox'
+                        id='remember-checkbox'
+                        checked={isChecked}
+                    />
+                </Form.Group>
+
                 <a href="#" className={forgotPassClass}>
                     <TranslateComponent messageKey={'forgotPass'}/>
                 </a>
 
-                <Button className={`${mainBtnClass} ${loginBtnClass}`} type="button" onClick={onSubmitHandler}>
-                    <TranslateComponent messageKey='login'/>
-                </Button>
+                <div className="text-center">
+                    <Button className={`${mainBtnClass} ${loginBtnClass}`} type="button" onClick={onSubmitHandler}>
+                        <TranslateComponent messageKey='login'/>
+                    </Button>
+                </div>
             </Form>
         </div>
     );

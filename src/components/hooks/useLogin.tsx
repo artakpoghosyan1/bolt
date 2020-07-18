@@ -16,7 +16,7 @@ interface IUseLogin {
     error: any
     login: (username: string, password: string) => Promise<IUser | null | any>
     isLoggedIn: () => boolean
-    logout: () => void
+    logout: (callBack?: Function) => void
 }
 
 export function useLogin(): IUseLogin {
@@ -64,10 +64,14 @@ export function useLogin(): IUseLogin {
         return !!storage.getItem('jwt')
     }
 
-    const logout = () => {
-        storage.clear().then(() => {
+    const logout = (callBack?: Function): void => {
+        storage.clearMultipleItems(['jwt', 'user', 'balance', 'transferHistory', 'credentials']).then(() => {
             dispatch({type: types.RESET_STORE})
             history.push('/login')
+
+            if(callBack) {
+                callBack()
+            }
         })
     }
 

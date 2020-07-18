@@ -4,7 +4,7 @@ interface IGetLocalStorage {
     setItem: (key: string, item: any) => void
     getItem: (key: string) => any
     removeItem: (key: string) => void
-    clear: () => Promise<any>
+    clearMultipleItems: (items: string[]) => Promise<any>
 }
 
 export function getLocalStorage(): IGetLocalStorage {
@@ -21,14 +21,14 @@ export function getLocalStorage(): IGetLocalStorage {
         localStorage.removeItem(`${STORAGE_PREFIX}_${key}`)
     }
 
-    const clear = (): Promise<any> => {
-        return Promise.resolve(localStorage.clear())
+    const clearMultipleItems = (items: string[]): Promise<any> => {
+        return Promise.resolve(items.forEach(item => removeItem(item)))
     }
 
     return {
         setItem,
         getItem,
         removeItem,
-        clear
+        clearMultipleItems
     }
 }

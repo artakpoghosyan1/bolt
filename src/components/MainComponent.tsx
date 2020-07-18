@@ -8,6 +8,9 @@ import {TranslateComponent} from "./shared/TranslateComponent";
 import {GiNewspaper, MdSlowMotionVideo, MdWork} from "react-icons/all";
 import {VideoTutorialComponent} from "./VideoTutorialComponent";
 import {BalanceComponent} from "./BalanceComponent";
+import {ApiService} from "../shared/services/ApiService";
+import {useLogin} from "./hooks/useLogin";
+import {getLocalStorage} from "../shared/utilities/localstorage";
 
 const menuItemClass = css`    
     & + & {
@@ -19,9 +22,13 @@ const menuItemIconsClass = css`
     margin-right: 4%;
 `
 
+const storage = getLocalStorage()
+let loginIntervalId: any = null
+
 export const MainComponent: React.FunctionComponent = React.memo(props => {
     const [openVideo, setOpenVideo] = React.useState(false)
     const history = useHistory()
+    const {isLoggedIn, logout} = useLogin()
 
     const redirectToPage = (page: string) => {
         history.push(`./${page}`)
@@ -34,6 +41,25 @@ export const MainComponent: React.FunctionComponent = React.memo(props => {
     const closeVideoHandler = () => {
         setOpenVideo(false)
     }
+
+    React.useEffect(() => {
+        if (isLoggedIn()) {
+            loginIntervalId = setInterval(() => {
+                const credentials = storage.getItem('credentials')
+
+                ApiService().fetchData(`user/auth`, 'POST', null, {
+                    username: credentials.username,
+                    password: credentials.password
+                }).then((response) => {
+                    storage.setItem('jwt', response.access_token)
+                    logout(() => {
+                        clearInterval(loginIntervalId)
+                    })
+                })
+            }, (13 * 60) * 1000)
+        }
+        return () => clearInterval(loginIntervalId)
+    }, [isLoggedIn])
 
     return <React.Fragment>
         <BalanceComponent/>
